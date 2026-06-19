@@ -75,31 +75,40 @@ Project State — служебное состояние проекта, кото
 
 Project State не является продуктовым артефактом, не заменяет канонические артефакты и не должен дублировать их содержимое.
 
+Каноническая модель Project State определена в `documents/PROJECT_STATE.md`.
+
 Studio Director использует Project State для:
 
 - определения текущего этапа;
 - фиксации текущего статуса;
-- фиксации назначенной роли или исполнителя роли;
+- фиксации назначенной канонической роли;
+- фиксации конкретного исполнителя, если он отличается от роли;
 - списка активных артефактов;
 - списка блокирующих проблем;
 - фиксации статуса эскалации;
-- восстановления последнего процессного решения.
+- восстановления последнего и предыдущего процессных решений;
+- фиксации текущей процессной цели.
 
 Минимальный состав Project State:
 
+- Project ID;
 - Current Stage;
 - Current Status;
-- Assigned Agent;
+- Assigned Role;
+- Assigned Executor;
 - Active Artifacts;
 - Blocking Issues;
 - Escalation Status;
-- Last Decision.
+- Last Decision;
+- Previous Decision;
+- Current Objective;
+- Last Updated.
 
 ## 5. Канонический жизненный цикл
 
 Studio Director использует только жизненный цикл из `LIFECYCLE.md`.
 
-| Этап | Входной артефакт | Ответственная роль | Выходной артефакт или результат | Критерий завершения |
+| Этап | Входные данные | Ответственная роль | Выходной артефакт или результат | Критерий завершения |
 | --- | --- | --- | --- | --- |
 | IDEA | Исходная идея заказчика в любой форме | Product Owner | Idea Brief | Идея зафиксирована и готова к исследованию. |
 | DISCOVERY | Idea Brief | Product Analyst | Discovery Report | Студия понимает проблему, пользователей, критерии успеха, ограничения, риски и допущения. |
@@ -108,13 +117,15 @@ Studio Director использует только жизненный цикл и
 | PLANNING | PRD и Architecture Document | Delivery Planner | Backlog и Task Specifications | Все необходимые работы описаны и готовы к реализации. |
 | IMPLEMENTATION | Backlog и Task Specifications | Implementer | Исходный код, автоматические тесты, Implementation Reports | Все запланированные задачи реализованы. |
 | VALIDATION | PRD, Architecture Document, Backlog, Implementation Reports, код и тесты | Validator | Validation Report | Все обязательные проверки успешно завершены, критические дефекты отсутствуют. |
-| RELEASE APPROVAL | Validation Report и описание релиза | Studio Director совместно с Release Manager | Статус Approved или Rework Required от заказчика | Получено решение заказчика. |
-| RELEASE | Approved release decision, Validation Report, Implementation Reports | Release Manager | Release Package, включая Release Notes | Релиз официально сформирован и зафиксирован. |
+| RELEASE APPROVAL | Validation Report, PRD, Release Candidate Summary, Project State | Studio Director совместно с Release Manager | Статус Approved, Approved With Conditions, Rework Required или Rejected от заказчика | Получено решение заказчика и определён следующий маршрут. |
+| RELEASE | Approved или Approved With Conditions release decision, Validation Report, Implementation Reports | Release Manager | Release Package, включая Release Notes | Релиз официально сформирован и зафиксирован. |
 | PROJECT MEMORY UPDATE | Все ключевые артефакты и решения проекта | Historian | Обновлённый Project Memory | Память проекта обновлена. |
 
 Если проект небольшой, Studio Director может назначить одного исполнителя на несколько совместимых ролей, если это не нарушает правило независимой проверки.
 
 Studio Director назначает каноническую роль из `AGENTS.md`. Если работу выполняет специализированный подагент, он считается исполнителем этой роли, а ответственность остаётся за канонической ролью.
+
+Этап RELEASE APPROVAL выполняется по `documents/RELEASE_APPROVAL.md`. Studio Director владеет этапом, Release Manager готовит материалы согласования, заказчик принимает решение.
 
 ## 6. Правила перехода между этапами
 
@@ -203,6 +214,8 @@ Studio Director возвращает проект на предыдущий эт
 - во время VALIDATION обнаружен дефект реализации → возврат в IMPLEMENTATION;
 - во время VALIDATION обнаружено несоответствие архитектуры требованиям → возврат в SOLUTION DESIGN;
 - во время RELEASE APPROVAL заказчик требует изменение состава продукта → возврат в PRODUCT DEFINITION;
+- во время RELEASE APPROVAL заказчик требует исправление реализации → возврат в IMPLEMENTATION;
+- во время RELEASE APPROVAL заказчик утверждает release candidate с допустимыми условиями → переход в RELEASE с фиксацией условий;
 - во время RELEASE обнаружена неполная релизная подготовка → возврат в RELEASE;
 - во время PROJECT MEMORY UPDATE обнаружена потеря ключевого решения → возврат к агенту-владельцу соответствующего артефакта.
 
@@ -232,7 +245,10 @@ Studio Director возвращает проект на предыдущий эт
 ## Decision
 ...
 
-## Assigned Agent
+## Assigned Role
+...
+
+## Assigned Executor
 ...
 
 ## Required Input
@@ -253,7 +269,7 @@ Yes / No
 
 Если решение является возвратом, в `Decision` нужно явно указать целевой этап возврата, а в `Reasoning` — причину, последствия и требуемые исправления.
 
-Поле `Assigned Agent` содержит каноническую роль из `AGENTS.md`. Если назначен специализированный исполнитель роли, он указывается вместе с канонической ролью.
+Поле `Assigned Role` содержит каноническую роль из `AGENTS.md`. Поле `Assigned Executor` содержит конкретного исполнителя или специализированного подагента, если он отличается от канонической роли.
 
 Если решение требует эскалации, в `Next Step` нужно указать вопрос заказчику и варианты решения, если они известны.
 

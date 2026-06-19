@@ -10,7 +10,7 @@ v0.1
 
 Переход между этапами допускается только при выполнении критериев завершения текущего этапа либо при явном решении о возврате на предыдущий этап.
 
-Studio Director фиксирует текущий этап, статус и последнее процессное решение в Project State. Project State является служебным состоянием оркестратора, а не этапом жизненного цикла и не продуктовым артефактом.
+Studio Director фиксирует текущее состояние процесса в Project State. Project State является служебным состоянием оркестратора, а не этапом жизненного цикла и не продуктовым артефактом. Каноническая модель Project State определена в `PROJECT_STATE.md`.
 
 ---
 
@@ -51,7 +51,7 @@ PROJECT MEMORY UPDATE
 | PLANNING | Delivery Planner | Backlog и Task Specifications |
 | IMPLEMENTATION | Implementer | Исходный код, автоматические тесты, Implementation Reports |
 | VALIDATION | Validator | Validation Report |
-| RELEASE APPROVAL | Studio Director при поддержке Release Manager | Approved или Rework Required |
+| RELEASE APPROVAL | Studio Director при поддержке Release Manager | Approved, Approved With Conditions, Rework Required или Rejected |
 | RELEASE | Release Manager | Release Package, включая Release Notes |
 | PROJECT MEMORY UPDATE | Historian | Обновлённый Project Memory |
 
@@ -275,27 +275,52 @@ Discovery Report достаточен для того, чтобы Product Owner 
 
 ## Цель
 
-Получить решение заказчика о готовности релиза.
+Получить решение заказчика о готовности release candidate с точки зрения бизнес-требований.
+
+Validation подтверждает качество.
+
+Release Approval подтверждает соответствие бизнес-требованиям.
+
+Release фиксирует результат.
+
+Канонический процесс RELEASE APPROVAL определён в `RELEASE_APPROVAL.md`.
+
+## Вход
+
+- Validation Report
+- PRD
+- Release Candidate Summary
+- Project State
 
 ## Действия
 
-Студия предоставляет:
+Studio Director при поддержке Release Manager предоставляет заказчику:
 
 - перечень реализованных возможностей;
+- перечень того, что не реализовано;
 - результаты проверок;
 - известные ограничения;
-- описание релиза.
+- известные риски;
+- отклонения от первоначального плана;
+- описание release candidate в формате, понятном без чтения технических артефактов целиком.
 
 ## Выход
 
 Один из статусов:
 
 - Approved
+- Approved With Conditions
 - Rework Required
+- Rejected
 
 ## Критерий завершения
 
-Получено решение заказчика.
+Получено решение заказчика и Studio Director определил следующий маршрут:
+
+- переход в RELEASE;
+- переход в RELEASE с условиями;
+- возврат на нужный этап;
+- фиксация отклонения без выпуска релиза.
 
 ---
 
@@ -304,6 +329,8 @@ Discovery Report достаточен для того, чтобы Product Owner 
 ## Цель
 
 Зафиксировать релиз продукта.
+
+RELEASE начинается только после RELEASE APPROVAL со статусом Approved или Approved With Conditions, если условия не требуют возврата на предыдущий этап.
 
 ## Действия
 

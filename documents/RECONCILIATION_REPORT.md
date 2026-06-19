@@ -114,15 +114,22 @@ Project State не является продуктовым артефактом 
 
 Владелец Project State: Studio Director.
 
+Каноническая модель Project State теперь определена в `PROJECT_STATE.md`.
+
 Минимальный состав Project State:
 
+- Project ID
 - Current Stage
 - Current Status
-- Assigned Agent
+- Assigned Role
+- Assigned Executor
 - Active Artifacts
 - Blocking Issues
 - Escalation Status
 - Last Decision
+- Previous Decision
+- Current Objective
+- Last Updated
 
 Project State используется Studio Director для маршрутизации работы, контроля переходов, фиксации блокеров и восстановления последнего процессного решения.
 
