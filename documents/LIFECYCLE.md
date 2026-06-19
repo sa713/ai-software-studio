@@ -10,6 +10,8 @@ v0.1
 
 Переход между этапами допускается только при выполнении критериев завершения текущего этапа либо при явном решении о возврате на предыдущий этап.
 
+Studio Director фиксирует текущий этап, статус и последнее процессное решение в Project State. Project State является служебным состоянием оркестратора, а не этапом жизненного цикла и не продуктовым артефактом.
+
 ---
 
 # Общая схема
@@ -35,6 +37,23 @@ RELEASE
 ↓
 PROJECT MEMORY UPDATE
 ```
+
+---
+
+# Ответственные роли и результаты
+
+| Этап | Ответственная роль | Выход |
+| --- | --- | --- |
+| IDEA | Product Owner | Idea Brief |
+| DISCOVERY | Product Analyst | Discovery Report |
+| PRODUCT DEFINITION | Product Owner | Product Requirements Document (PRD) |
+| SOLUTION DESIGN | Solution Architect | Architecture Document |
+| PLANNING | Delivery Planner | Backlog и Task Specifications |
+| IMPLEMENTATION | Implementer | Исходный код, автоматические тесты, Implementation Reports |
+| VALIDATION | Validator | Validation Report |
+| RELEASE APPROVAL | Studio Director при поддержке Release Manager | Approved или Rework Required |
+| RELEASE | Release Manager | Release Package, включая Release Notes |
+| PROJECT MEMORY UPDATE | Historian | Обновлённый Project Memory |
 
 ---
 
@@ -74,7 +93,7 @@ PROJECT MEMORY UPDATE
 
 ## Цель
 
-Понять проблему, цели и ограничения.
+Понять проблему, предложенное решение, цели и ограничения.
 
 ## Действия
 
@@ -83,6 +102,8 @@ PROJECT MEMORY UPDATE
 Вопросы должны относиться только к информации, влияющей на продуктовые или технические решения.
 
 Запрещается собирать информацию без практической необходимости.
+
+Если заказчик предложил конкретное решение, Студия анализирует, какую проблему оно должно решить и насколько оно связано с этой проблемой.
 
 ## Выход
 
@@ -93,10 +114,13 @@ PROJECT MEMORY UPDATE
 Студия понимает:
 
 - какую проблему решает продукт;
+- какое решение предложено заказчиком и как оно связано с проблемой;
 - кто его пользователи;
 - что считается успешным результатом;
 - какие существуют ограничения;
 - какие существуют риски и допущения.
+
+Discovery Report достаточен для того, чтобы Product Owner мог начать создание PRD без дополнительных исследований.
 
 ---
 
@@ -292,8 +316,7 @@ PROJECT MEMORY UPDATE
 
 ## Выход
 
-- Release Package
-- Release Notes
+- Release Package, включая Release Notes
 
 ## Критерий завершения
 
@@ -306,6 +329,8 @@ PROJECT MEMORY UPDATE
 ## Цель
 
 Сохранить знания проекта.
+
+Project Memory Update является операцией обновления Project Memory, а не отдельным артефактом.
 
 ## Действия
 
@@ -321,7 +346,7 @@ PROJECT MEMORY UPDATE
 
 ## Выход
 
-- Project Memory Update
+- Обновлённый Project Memory
 
 ## Критерий завершения
 

@@ -84,7 +84,7 @@ Stage 1 — Idea
 
 ## Владелец
 
-Product Agent
+Product Owner
 
 ## Содержимое
 
@@ -120,13 +120,16 @@ Stage 2 — Discovery
 
 ## Владелец
 
-Business Analyst Agent
+Product Analyst
 
 ## Содержимое
 
 ### Problem Statement
 
 - Какую проблему решаем
+- Какое решение предложено заказчиком, если оно уже есть
+- Как предложенное решение связано с проблемой
+- Какие очевидные альтернативные подходы заметны, если они важны для риска или бизнес-эффекта
 
 ### Target Users
 
@@ -143,6 +146,10 @@ Business Analyst Agent
 ### Assumptions
 
 - Допущения
+
+### Risks
+
+- Риски
 
 ### Open Questions
 
@@ -167,7 +174,7 @@ Stage 3 — Product Definition
 
 ## Владелец
 
-Product Manager Agent
+Product Owner
 
 ## Содержимое
 
@@ -217,7 +224,7 @@ Stage 4 — Solution Design
 
 ## Владелец
 
-Solution Architect Agent
+Solution Architect
 
 ## Содержимое
 
@@ -271,7 +278,7 @@ Stage 5 — Planning
 
 ## Владелец
 
-Tech Lead Agent
+Delivery Planner
 
 ## Содержимое
 
@@ -303,7 +310,7 @@ Tech Lead Agent
 
 ## Владелец
 
-Tech Lead Agent
+Delivery Planner
 
 ## Содержимое
 
@@ -349,7 +356,7 @@ Tech Lead Agent
 
 ## Владелец
 
-Developer Agent
+Implementer
 
 ## Содержимое
 
@@ -391,7 +398,7 @@ Stage 7 — Validation
 
 ## Владелец
 
-QA Agent
+Validator
 
 ## Содержимое
 
@@ -433,7 +440,7 @@ Stage 9 — Release
 
 ## Владелец
 
-Release Manager Agent
+Release Manager
 
 ## Содержимое
 
@@ -457,6 +464,10 @@ Release Manager Agent
 
 Инструкции по развёртыванию.
 
+### Release Notes
+
+Краткое описание изменений релиза для заказчика и пользователей.
+
 ## Является источником истины для
 
 - состояния релиза
@@ -469,13 +480,15 @@ Release Manager Agent
 
 Долговременная память проекта.
 
+Project Memory Update является операцией обновления Project Memory, а не отдельным артефактом.
+
 ## Этап создания
 
 На протяжении всего жизненного цикла проекта.
 
 ## Владелец
 
-Project Historian Agent
+Historian
 
 ## Содержимое
 
@@ -542,6 +555,42 @@ Project Memory
     ↑
 Получает информацию со всех этапов
 ```
+
+---
+
+# Служебные объекты
+
+## Project State
+
+Project State — служебное состояние проекта, которым управляет Studio Director.
+
+Project State не является продуктовым артефактом и не входит в канонический перечень артефактов проекта.
+
+Project State существует для оркестрации процесса:
+
+- определить текущий этап;
+- понять текущий статус;
+- увидеть назначенную роль или исполнителя роли;
+- увидеть активные артефакты;
+- увидеть блокирующие проблемы;
+- увидеть статус эскалации;
+- восстановить последнее процессное решение.
+
+## Владелец
+
+Studio Director
+
+## Минимальный состав
+
+- Current Stage
+- Current Status
+- Assigned Agent
+- Active Artifacts
+- Blocking Issues
+- Escalation Status
+- Last Decision
+
+Project State не должен дублировать содержимое канонических артефактов. Он хранит ссылки, статусы и решения, необходимые для маршрутизации работы.
 
 ---
 
