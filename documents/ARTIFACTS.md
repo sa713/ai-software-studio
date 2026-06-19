@@ -1646,6 +1646,59 @@ Project Memory
 
 ---
 
+# Материалы согласования
+
+Материалы согласования используются для принятия решений на отдельных этапах жизненного цикла, но не входят в канонический перечень артефактов проекта.
+
+## Release Candidate Summary
+
+Release Candidate Summary — обязательный материал согласования на этапе RELEASE APPROVAL.
+
+Release Candidate Summary не является каноническим артефактом проекта.
+
+Release Candidate Summary не является источником истины для:
+
+- требований;
+- реализации;
+- проверки качества;
+- состояния релиза;
+- Project Memory.
+
+Release Candidate Summary существует для customer-facing согласования release candidate. Он должен кратко показать заказчику, что реализовано, что не реализовано, какие результаты Validation получены, какие ограничения и риски известны и какое решение требуется принять.
+
+Release Candidate Summary собирается из канонических источников и служебных решений. Он не должен вводить новые требования, менять результаты Validation, переопределять состав реализации или заменять Release Package.
+
+Обязательные источники Release Candidate Summary:
+
+- PRD;
+- Validation Report;
+- Implementation Reports, если нужны для состава реализованного;
+- Backlog, если нужен для связи с выполненными работами;
+- Project State;
+- связанные решения Studio Director.
+
+После решения заказчика результат RELEASE APPROVAL фиксируется в Project State.
+
+После RELEASE состояние релиза фиксируется в Release Package.
+
+### Минимальная структура
+
+Release Candidate Summary должен содержать:
+
+- `Metadata`;
+- `Release Candidate Scope`;
+- `Implemented Items`;
+- `Not Implemented`;
+- `Validation Summary`;
+- `Known Limitations`;
+- `Known Risks`;
+- `Deviations From Plan`;
+- `Decision Request`.
+
+Детальный процесс использования Release Candidate Summary на этапе RELEASE APPROVAL определён в `RELEASE_APPROVAL.md`.
+
+---
+
 # Служебные объекты
 
 ## Project State
