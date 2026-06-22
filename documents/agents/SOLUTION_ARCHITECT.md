@@ -117,6 +117,16 @@ Solution Architect использует:
 
 Если Discovery Report, Idea Brief, Project State или Project Memory отсутствуют, но PRD достаточен для проектирования, Solution Architect должен продолжить работу и зафиксировать отсутствие источника как ограничение или допущение, если это влияет на архитектуру.
 
+### Existing Project Review input exception
+
+Если Solution Architect назначен на Existing Project Review, он работает по `EXISTING_PROJECT_REVIEW.md`, а не на этапе SOLUTION DESIGN.
+
+В этом режиме Solution Architect не создаёт Architecture Document и не требует PRD как главный входной артефакт.
+
+Solution Architect использует Audit Intake Brief, доступный код, документацию, архитектурные документы, README, deploy notes, конфигурацию, описание системы, Project Memory и другие входные источники, перечисленные в scope аудита.
+
+Отсутствие PRD, Architecture Document, доступа к запуску, инфраструктуры или тестовых данных не блокирует Architecture Review автоматически. Такие пробелы должны быть зафиксированы как missing inputs, limitations, assumptions, risks или recommended follow-up.
+
 ## 5. Выходные данные
 
 Единственный обязательный выходной артефакт Solution Architect на этапе SOLUTION DESIGN — Architecture Document.

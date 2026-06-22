@@ -1,6 +1,6 @@
 # ARTIFACTS.md
-v0.1
-2026-06-19
+v0.2
+2026-06-22
 
 ## Назначение
 
@@ -210,9 +210,13 @@ Product Analyst
 
 - понимания проблемы;
 - бизнес-контекста;
-- пользователей;
-- критериев успеха;
-- ограничений, допущений, рисков и открытых вопросов, выявленных на Discovery.
+- предложенного решения и его связи с проблемой;
+- пользователей и ролей;
+- пользовательских, административных и операционных сценариев, выявленных на Discovery;
+- пропущенных требований, слепых зон и пограничных случаев;
+- критериев и метрик успеха;
+- ограничений, допущений, рисков и открытых вопросов, выявленных на Discovery;
+- рекомендаций Product Analyst перед созданием PRD.
 
 ## Каноническая структура
 
@@ -226,82 +230,126 @@ Product Analyst
 - `Author: Product Analyst`;
 - `Source Artifacts`.
 
-### Problem Statement
+### Problem Understanding
 
-Какую проблему нужно решить и как с ней связано предложенное решение.
+Какую проблему нужно решить и какой контекст влияет на её понимание.
 
 Обязательные поля:
 
 - `Problem`;
+- `Business Context`;
+- `Known Goals`;
+- `Known Constraints`;
+- `Evidence or Source`.
+
+### Proposed Solution Understanding
+
+Какое решение предложено заказчиком, если оно уже есть, и насколько оно связано с реальной проблемой.
+
+Обязательные поля:
+
 - `Customer Proposed Solution`, если заказчик предложил решение;
 - `Problem-Solution Fit`;
+- `Contradictions or Weak Fit`, если они обнаружены;
 - `Relevant Alternatives`, если очевидные альтернативы важны для риска или бизнес-эффекта.
 
-### Target Users
+### Users and Roles
 
-Для кого создаётся продукт.
+Для кого создаётся продукт и какие роли нужны для его использования, администрирования, эксплуатации или поддержки.
 
 Обязательные поля:
 
-- `User Group`;
-- `User Goal`;
+- `Role or User Group`;
+- `Goal or Responsibility`;
 - `Context of Use`;
-- `Priority`, если групп пользователей несколько.
+- `Status: Known, Assumed, or Missing`;
+- `Priority or Impact`, если ролей несколько.
 
-### Success Criteria
+### Missing Requirements and Blind Spots
 
-Что считается успешным результатом.
+Каких требований, ролей, сценариев, процессов, механизмов или условий не хватает в исходном описании.
 
 Обязательные поля:
 
-- `Criterion`;
+- `Blind Spot`;
+- `Category: Requirement, Role, User Scenario, Administrative Scenario, Operational Process, Support, Maintenance, Monitoring, Success Metric, Edge Case, or Risk`;
+- `Why It Matters`;
+- `Impact on PRD`;
+- `Recommended Follow-Up`.
+
+### User Scenarios
+
+Какие пользовательские сценарии известны, предполагаются или отсутствуют.
+
+Обязательные поля:
+
+- `Scenario`;
+- `User or Role`;
+- `Expected Outcome`;
+- `Status: Known, Assumed, or Missing`;
+- `Edge Cases`, если применимо.
+
+### Administrative and Operational Scenarios
+
+Какие административные сценарии, операционные процессы и эксплуатационные действия нужны или могут быть нужны.
+
+Обязательные поля:
+
+- `Scenario or Process`;
+- `Responsible Role`;
+- `Trigger`;
+- `Expected Outcome`;
+- `Missing Information or Risk`.
+
+### Support and Maintenance Considerations
+
+Какие процессы поддержки, сопровождения, мониторинга и обработки проблем нужны или могут быть нужны.
+
+Обязательные поля:
+
+- `Need`;
+- `Operational Owner`, если известен;
+- `Monitoring or Support Mechanism`;
+- `Failure or Issue Handling`;
+- `Follow-Up`.
+
+### Success Metrics
+
+Что считается успешным результатом и как это можно измерить или подтвердить.
+
+Обязательные поля:
+
+- `Metric or Criterion`;
 - `Measurement or Evidence`;
 - `Source`;
-
-### Constraints
-
-Ограничения, влияющие на продукт или реализацию.
-
-Обязательные поля:
-
-- `Constraint`;
-- `Type`;
-- `Source`;
-- `Impact`.
-
-### Assumptions
-
-Допущения, на которых можно продолжать работу.
-
-Обязательные поля:
-
-- `Assumption`;
-- `Reason`;
-- `Risk`;
 - `Validation Need`, если требуется последующая проверка.
 
-### Risks
+### Risks and Assumptions
 
-Риски, которые могут повлиять на достижение цели, качество решения, сроки, возможность реализации или соответствие предложенного решения проблеме.
+Риски, допущения и открытые вопросы, влияющие на бизнес-результат, продукт, архитектуру, внедрение, масштабирование или эксплуатацию.
 
 Обязательные поля:
 
-- `Risk`;
-- `Cause`;
+- `Type: Risk, Assumption, or Open Question`;
+- `Statement`;
+- `Cause or Reason`;
 - `Impact`;
-- `Likelihood or Severity`;
-- `Mitigation or Follow-Up`.
+- `Likelihood or Severity`, если это риск;
+- `Mitigation, Validation Need, or Routing`.
 
-### Open Questions
+### Recommendations Before PRD
 
-Нерешённые вопросы, влияющие на бизнес-решение, продуктовое решение, архитектурное решение или критерии успеха.
+Что Product Analyst рекомендует уточнить, добавить, проверить или явно передать Product Owner перед созданием PRD.
 
 Обязательные поля:
 
-- `Question`;
-- `Why It Matters`;
-- `Decision Impact`;
+- `Recommendation`;
+- `Reason`;
 - `Owner or Routing`;
+- `Impact on PRD`;
+- `Priority`.
+
+Рекомендации Product Analyst не являются PRD, не утверждают финальный состав продукта и не переносят владение требованиями от Product Owner.
 
 ## Дополнительные разделы
 
@@ -1057,12 +1105,12 @@ Validator
 ## Является источником истины для
 
 - выполненных проверок;
-- результатов проверки Scope и Acceptance Criteria;
-- результатов проверки архитектурного соответствия;
-- результатов проверки тестов;
-- найденных дефектов, отклонений и наблюдений;
+- результатов Compliance Review;
+- результатов Expert Review;
+- найденных дефектов, рисков, улучшений и субъективных предпочтений;
+- возможностей улучшения;
 - остаточных рисков;
-- итогового Validation Status;
+- итогового Validation Verdict;
 - рекомендаций для Studio Director.
 
 ## Каноническая структура
@@ -1081,107 +1129,87 @@ Validator
 - `Author: Validator`;
 - `Source Artifacts`.
 
-### Executed Checks
+### Compliance Review
 
-Проведённые проверки.
+Проверка соответствия: сделано ли то, что было заказано.
 
-Для каждой проверки обязательны поля:
+Обязательные поля:
 
-- `Check`;
-- `Source`;
-- `Method`;
-- `Result`;
-- `Evidence`;
-- `Notes`.
+- `Requirements / PRD`;
+- `Acceptance Criteria`;
+- `Architecture Constraints`;
+- `Implemented Scope`;
+- `Out Of Scope`;
+- `Test Evidence`;
+- `Compliance Result`;
+- `Blocking Issues`;
+- `Evidence`.
 
-### Scope Validation
-
-Проверка Scope, Out Of Scope, Constraints и Dependencies.
-
-Для каждого элемента обязательны поля:
-
-- `Item`;
-- `Expected`;
-- `Actual`;
-- `Status`;
-- `Evidence`;
-- `Notes`.
-
-### Acceptance Criteria Validation
-
-Проверка каждого Acceptance Criterion.
-
-Для каждого критерия обязательны поля:
-
-- `Criterion`;
-- `Status`;
-- `Verification Method`;
-- `Evidence`;
-- `Rationale`;
-- `Related Findings`.
-
-Допустимые значения `Status`:
+Допустимые значения `Compliance Result`:
 
 - `Passed`;
 - `Passed With Notes`;
 - `Failed`;
 - `Not Verifiable`.
 
-### Architecture Validation
+### Expert Review
 
-Проверка соответствия Architecture Document.
+Экспертная оценка качества: насколько хорошим получилось решение.
 
-Для каждого архитектурно значимого пункта обязательны поля:
+Обязательные поля:
 
-- `Area`;
-- `Expected`;
-- `Actual`;
-- `Status`;
-- `Evidence`;
-- `Notes`.
+- `Architecture Quality`;
+- `Code Quality`;
+- `Maintainability`;
+- `Dependency Review`;
+- `Security`;
+- `Testability`;
+- `Test Coverage Review`;
+- `Technical Debt`;
+- `Scalability`;
+- `Solution Complexity`;
+- `UX`, если применимо;
+- `Expert Review Result`;
+- `Blocking Quality Issues`;
+- `Non-Blocking Quality Notes`;
+- `Evidence`.
 
-### Test Validation
+Допустимые значения `Expert Review Result`:
 
-Проверка тестов.
+- `Acceptable`;
+- `Acceptable With Risks`;
+- `Needs Improvement`;
+- `Not Assessed`.
 
-Для каждого набора тестов или теста обязательны поля:
-
-- `Test`;
-- `Type`;
-- `Covers`;
-- `Relevance`;
-- `Execution Result`;
-- `Gaps`;
-- `Notes`.
+Expert Review не должен автоматически блокировать релиз только потому, что существует более предпочтительный вариант реализации. Блокирующим может быть только finding с типом `Defect` или существенный `Risk`, имеющий проверяемое влияние.
 
 ### Findings
 
-Обнаруженные проблемы, отклонения и наблюдения.
+Обнаруженные дефекты, риски, улучшения и субъективные предпочтения.
 
 Для каждого finding обязательны поля:
 
 - `Finding`;
 - `Type`;
+- `Review Mode`;
 - `Severity`;
+- `Blocking`;
 - `Source`;
 - `Evidence`;
 - `Impact`;
 - `Recommendation`.
 
-### Defect List
-
-Дефекты, требующие исправления или решения.
-
-Для каждого дефекта обязательны поля:
+Допустимые значения `Type`:
 
 - `Defect`;
-- `Severity`;
-- `Impact`;
-- `Source`;
-- `Reproduction`;
-- `Affected Artifacts`;
-- `Evidence`;
-- `Recommended Routing`.
+- `Risk`;
+- `Improvement`;
+- `Subjective Preference`.
+
+Допустимые значения `Review Mode`:
+
+- `Compliance Review`;
+- `Expert Review`.
 
 Допустимые значения `Severity`:
 
@@ -1190,69 +1218,48 @@ Validator
 - `Minor`;
 - `Observation`.
 
-Если дефектов нет, раздел должен содержать `None`.
+Если findings нет, раздел должен содержать `None`.
 
-### Deviations
+### Improvement Opportunities
 
-Отклонения от требований, архитектуры, Scope, Acceptance Criteria или Implementation Report.
+Неблокирующие возможности улучшения.
 
-Для каждого отклонения обязательны поля:
+Для каждой возможности обязательны поля:
 
-- `Deviation`;
-- `Expected Baseline`;
-- `Actual Result`;
-- `Impact`;
-- `Source Artifact`;
-- `Requires Decision`;
-- `Recommended Routing`.
-
-Если отклонений нет, раздел должен содержать `None`.
-
-### Risk Assessment
-
-Остаточные риски.
-
-Для каждого риска обязательны поля:
-
-- `Risk`;
-- `Probability`;
-- `Impact`;
-- `Mitigation`;
-- `Owner`.
-
-### Recommendations
-
-Рекомендации для Studio Director.
-
-Для каждой рекомендации обязательны поля:
-
-- `Recommendation`;
-- `Reason`;
-- `Target Role`;
-- `Target Stage`;
+- `Opportunity`;
+- `Related Finding`;
+- `Expected Benefit`;
+- `Why Non-Blocking`;
+- `Suggested Owner`;
 - `Priority`.
 
-Если рекомендаций нет, раздел должен содержать `None`.
+Если возможностей улучшения нет, раздел должен содержать `None`.
 
-### Validation Status
+Improvement Opportunities не являются дефектами и не должны становиться обязательным возвратом в Implementation без отдельного решения Studio Director.
 
-Итоговый статус проверки.
+### Validation Verdict
 
-Допустимые значения:
+Итоговое проверочное решение.
+
+Обязательные поля:
+
+- `Compliance Review Result`;
+- `Expert Review Result`;
+- `Validation Status`;
+- `Blocking Findings`;
+- `Non-Blocking Risks`;
+- `Improvement Opportunities Summary`;
+- `Subjective Preferences Summary`;
+- `Required Follow-Up`;
+- `Status Rationale`.
+
+Допустимые значения `Validation Status`:
 
 - `Passed`;
 - `Passed With Risks`;
 - `Failed`.
 
-### Status Rationale
-
-Краткое обоснование итогового статуса.
-
-Обязательные поля:
-
-- `Rationale`;
-- `Blocking Findings`;
-- `Risk Summary`.
+`Improvement` и `Subjective Preference` не являются блокерами Validation сами по себе.
 
 ### Required Follow-Up
 
@@ -1610,6 +1617,307 @@ Project Memory не должен становиться копией PRD, Archit
 
 ---
 
+# Artifact 11. Audit Intake Brief
+
+## Назначение
+
+Audit Intake Brief фиксирует запуск аудита существующего проекта в режиме Existing Project Review.
+
+Он нужен, чтобы Studio Director мог начать аудит без ручного придумывания процесса, согласовать границы проверки и явно показать, какие входные данные доступны, чего не хватает и какие ограничения есть у review.
+
+Audit Intake Brief создаётся только для отдельного режима Existing Project Review, описанного в `EXISTING_PROJECT_REVIEW.md`.
+
+Он не является обязательным артефактом основного жизненного цикла разработки.
+
+## Этап создания
+
+Отдельный режим — Existing Project Review, до начала Audit.
+
+Не является этапом из `LIFECYCLE.md`.
+
+## Владелец
+
+Studio Director.
+
+Studio Director может подготовить Audit Intake Brief на основании запроса заказчика, ссылки на репозиторий, переданных файлов, документации или другого входного контекста.
+
+## Является источником истины для
+
+- запуска Existing Project Review;
+- цели аудита;
+- границ аудита;
+- доступных входных источников;
+- отсутствующих входных источников;
+- ограничений аудита;
+- запрошенной глубины review;
+- запрошенных deliverables.
+
+Audit Intake Brief не заменяет Existing Project Review Report, PRD, Architecture Document, Validation Report или Project Memory.
+
+## Каноническая структура
+
+### Metadata
+
+Обязательные поля:
+
+- `Project ID`;
+- `Version`;
+- `Creation Date`;
+- `Prepared By`;
+- `Request Source`.
+
+### Project Name
+
+Название существующего проекта или системы.
+
+### Audit Goal
+
+Зачем проводится аудит и какое решение должен помочь принять результат.
+
+### Audit Scope
+
+Какая система, часть системы, репозиторий, компонент, продуктовая область или набор вопросов входит в review.
+
+Scope должен также фиксировать явно исключённые области, если они важны для ожиданий заказчика.
+
+### Available Inputs
+
+Доступные источники анализа.
+
+Минимальное обязательное условие запуска аудита — хотя бы один источник анализа.
+
+Источником анализа может быть репозиторий, исходный код, документация, архитектурный документ, описание системы, список известных проблем, результаты CI, эксплуатационные заметки или другой проверяемый контекст.
+
+### Missing Inputs
+
+Входные данные, которые были бы полезны, но отсутствуют на момент запуска review.
+
+Отсутствующие материалы не всегда блокируют аудит, но должны быть явно видны до начала работы.
+
+### Audit Limitations
+
+Ограничения проверки, вызванные неполным scope, отсутствием запуска, отсутствием тестовых данных, отсутствием инфраструктуры, неполной документацией или другими условиями.
+
+Если review выполняется только по статическим источникам, это должно быть указано здесь.
+
+### Requested Depth
+
+Запрошенная глубина аудита.
+
+Допустимые значения:
+
+- `Light Review` — быстрый обзор для первичного понимания состояния проекта;
+- `Standard Review` — полноценный аудит по доступным входным данным;
+- `Deep Review` — максимально возможный анализ в рамках доступов, времени и scope.
+
+### Requested Deliverables
+
+Ожидаемые результаты review.
+
+Минимальный итоговый deliverable для режима Existing Project Review — Existing Project Review Report.
+
+Дополнительные deliverables допускаются только как уточнение формата вывода и не создают новые обязательные роли или этапы lifecycle.
+
+### Input Classification
+
+Обязательные входные данные:
+
+- хотя бы один источник анализа.
+
+Необязательные входные данные:
+
+- документация;
+- архитектурные документы;
+- доступ к запуску;
+- тестовые данные;
+- инфраструктура.
+
+Необязательные входные данные могут существенно влиять на точность review. Если они отсутствуют, ограничение должно быть отражено в `Missing Inputs` и `Audit Limitations`.
+
+---
+
+# Artifact 12. Existing Project Review Report
+
+## Назначение
+
+Структурированный результат аудита существующего проекта.
+
+Existing Project Review Report создаётся только в режиме Existing Project Review, описанном в `EXISTING_PROJECT_REVIEW.md`.
+
+Он не является обязательным артефактом основного жизненного цикла разработки.
+
+## Этап создания
+
+Отдельный режим — Existing Project Review.
+
+Не является этапом из `LIFECYCLE.md`.
+
+## Владелец
+
+Назначенная Studio Director роль из существующего набора ролей.
+
+По умолчанию итоговую сборку отчёта выполняет Validator, если review включает Quality Review.
+
+Product Analyst отвечает за содержимое раздела `Product Review`.
+
+Solution Architect отвечает за содержимое раздела `Architecture Review`.
+
+Validator отвечает за содержимое раздела `Quality Review` и применение `CODE_REVIEW_FRAMEWORK.md`.
+
+Studio Director оркестрирует режим, но не становится новой ролью аудита.
+
+## Является источником истины для
+
+- выводов аудита существующего проекта;
+- продуктовых проблем и отсутствующих сценариев;
+- архитектурных рисков;
+- quality findings;
+- рисков эксплуатации, поддержки и развития;
+- возможностей улучшения;
+- recommended roadmap.
+
+Existing Project Review Report не заменяет PRD, Architecture Document, Backlog, Validation Report, Release Package или Project Memory.
+
+## Каноническая структура
+
+### Metadata
+
+Обязательные поля:
+
+- `Project ID`;
+- `Reviewed System`;
+- `Audit Intake Brief`;
+- `Review Scope`;
+- `Version`;
+- `Creation Date`;
+- `Report Owner`;
+- `Participating Roles`;
+- `Source Inputs`;
+- `Limitations`.
+
+`Source Inputs` должен перечислять репозиторий, код, документацию, архитектурные документы, описание системы или другие входы, использованные при review.
+
+`Audit Intake Brief` должен ссылаться на стартовый intake или эквивалентное процессное решение Studio Director.
+
+### Executive Summary
+
+Краткий вывод по состоянию существующего проекта.
+
+Обязательные поля:
+
+- `Overall Assessment`;
+- `Top Findings`;
+- `Primary Risks`;
+- `Highest-Value Improvements`;
+- `Recommended Next Step`.
+
+### Product Review
+
+Выводы Product Analyst по продуктовой стороне существующей системы.
+
+Для каждого вывода обязательны поля:
+
+- `Observation`;
+- `Consequence`;
+- `Recommendation`.
+
+Если Product Review не применим, раздел должен содержать `Not Applicable` и причину.
+
+### Architecture Review
+
+Выводы Solution Architect по архитектуре и техническим решениям.
+
+Для каждого вывода обязательны поля:
+
+- `Observation`;
+- `Consequence`;
+- `Recommendation`.
+
+Если Architecture Review не применим, раздел должен содержать `Not Applicable` и причину.
+
+### Quality Review
+
+Выводы Validator по качеству реализации с использованием `CODE_REVIEW_FRAMEWORK.md`.
+
+Для каждого вывода обязательны поля:
+
+- `Observation`;
+- `Consequence`;
+- `Recommendation`;
+- `Finding Type: Defect, Risk, Improvement, or Subjective Preference`;
+- `Severity: Critical, Major, Minor, or Observation`;
+- `Evidence`.
+
+Если Quality Review не применим, раздел должен содержать `Not Applicable` и причину.
+
+### Risks
+
+Риски эксплуатации, развития, поддержки, безопасности, масштабирования, продукта или архитектуры.
+
+Для каждого риска обязательны поля:
+
+- `Risk`;
+- `Source`;
+- `Consequence`;
+- `Severity`;
+- `Recommended Mitigation`;
+- `Owner or Routing`.
+
+Если рисков нет, раздел должен содержать `None`.
+
+### Improvement Opportunities
+
+Список улучшений, отделённых от дефектов.
+
+Для каждого улучшения обязательны поля:
+
+- `Opportunity`;
+- `Observation`;
+- `Consequence`;
+- `Recommendation`;
+- `Expected Benefit`;
+- `Priority`.
+
+Если улучшений нет, раздел должен содержать `None`.
+
+### Recommended Roadmap
+
+Предлагаемый план развития существующей системы.
+
+Обязательные группы:
+
+- `Critical Fixes`;
+- `Risk Reduction`;
+- `Product Gaps`;
+- `Architecture Improvements`;
+- `Quality Improvements`;
+- `Operational Improvements`;
+- `Later Opportunities`.
+
+Для каждого пункта roadmap обязательны поля:
+
+- `Item`;
+- `Reason`;
+- `Expected Outcome`;
+- `Suggested Owner or Role`;
+- `Priority`;
+- `Dependencies`, если есть.
+
+Recommended Roadmap не является Backlog и не создаёт обязательства реализации.
+
+## Дополнительные разделы
+
+Допустимые дополнительные разделы:
+
+- `Reviewed Inputs`;
+- `Out Of Scope`;
+- `Open Questions`;
+- `Appendix`.
+
+Дополнительные разделы не должны заменять обязательные разделы или превращать отчёт в полный пересказ кода.
+
+---
+
 # Зависимости артефактов
 
 ```text
@@ -1642,6 +1950,13 @@ Release Package
 Project Memory
     ↑
 Получает информацию со всех этапов
+
+Audit Intake Brief
+    ↓
+
+Existing Project Review Report
+    ↑
+Создаётся только в отдельном режиме Existing Project Review
 ```
 
 ---
