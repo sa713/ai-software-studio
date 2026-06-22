@@ -1,5 +1,5 @@
 # ARTIFACTS.md
-v0.2
+v0.5
 2026-06-22
 
 ## Назначение
@@ -1996,11 +1996,14 @@ Studio Director может подготовить Mission Definition and Plan н
 - ограничений Mission;
 - критериев завершения;
 - stop conditions;
-- бюджета автономности;
+- mission-level ограничений автономности;
 - milestones;
+- требования Mission Run Authorization перед выполнением задач;
 - правил остановки и эскалации Mission.
 
 Mission Definition and Plan не заменяет PRD, Architecture Document, Backlog, Task Specification, Validation Report, Release Package или Project Memory.
+
+Mission Definition and Plan не хранит параметры конкретного запуска Mission. Run-specific параметры, включая Autonomy Level, Allowed Scope, Typed Budget, Run Status and Stop Conditions for a concrete launch, хранятся в `MISSION_RUN.md`.
 
 ## Каноническая структура
 
@@ -2061,6 +2064,7 @@ Mission Definition and Plan не заменяет PRD, Architecture Document, Ba
 - `Mission Intake`;
 - `Mission Planning`;
 - `Backlog Generation`;
+- `Mission Run Authorization`;
 - `Implementation Loop`;
 - `Mission Review`;
 - `Mission Complete`.
@@ -2083,18 +2087,33 @@ Mission Definition and Plan не заменяет PRD, Architecture Document, Ba
 - `Related Source`;
 - `Expected Tasks`, если известны.
 
-### Autonomy Budget
+### Mission-Level Budget Policy
 
-Бюджет автономности Mission.
+Mission-level guardrails для будущих Mission Run.
+
+Concrete Typed Budget отдельного запуска фиксируется только в `MISSION_RUN.md`.
 
 Обязательные поля:
 
-- `Task Limit`;
-- `Cycle Limit`;
-- `File Change Limit`, если применимо;
-- `Time Limit`, если применимо;
-- `Other Limits`, если есть;
-- `Budget Exhaustion Rule`.
+- `Budget Ownership: Mission Run`;
+- `Run Budget Location`;
+- `Mission-Level Guardrails`;
+- `Maximum Allowed Scope`, если применимо;
+- `Budget Exhaustion Policy Reference`.
+
+### Mission Run Policy
+
+Правила запуска Mission Run.
+
+Обязательные поля:
+
+- `Mission Run Authorization Required: Yes`;
+- `Mission Run Artifact`;
+- `Allowed Mission Run Scope`;
+- `Run-Specific Parameters Location`;
+- `Authorization Owner: Studio Director`.
+
+`Mission Run Policy` не должен содержать typed budget или autonomy level конкретного запуска.
 
 ### Stop Conditions
 
@@ -2107,7 +2126,7 @@ Mission Definition and Plan не заменяет PRD, Architecture Document, Ba
 - roadmap противоречит проекту;
 - есть несколько равноценных направлений развития;
 - достигнут milestone;
-- исчерпан бюджет автономности.
+- исчерпан любой обязательный budget текущего Mission Run.
 
 ### Completion Criteria
 
@@ -2138,7 +2157,7 @@ Mission Definition and Plan не заменяет PRD, Architecture Document, Ba
 
 Mission State фиксирует текущее служебное состояние активной Mission.
 
-Mission State нужен, чтобы Studio Director мог продолжать Mission между циклами, видеть текущий milestone, активную задачу, использованный бюджет автономности, блокеры и последнее решение.
+Mission State нужен, чтобы Studio Director мог продолжать Mission между циклами, видеть текущий milestone, активную задачу, активный или последний Mission Run, блокеры и последнее решение.
 
 `MISSION_STATE.md` создаётся только для активной Mission.
 
@@ -2158,7 +2177,7 @@ Studio Director.
 - текущего milestone;
 - текущего цикла;
 - текущей или следующей задачи;
-- использованного бюджета автономности;
+- активного или последнего Mission Run;
 - активных блокеров;
 - активных stop conditions;
 - последнего Mission Review;
@@ -2184,6 +2203,8 @@ Mission State не заменяет Project State. Project State может сс
 Обязательные поля:
 
 - `Status`;
+- `Active Mission Run`;
+- `Last Mission Run`;
 - `Current Milestone`;
 - `Current Cycle`;
 - `Current Task`;
@@ -2201,19 +2222,18 @@ Mission State не заменяет Project State. Project State может сс
 - `Completed`;
 - `Stopped`.
 
-### Autonomy Budget Usage
+### Mission Run References
 
 Обязательные поля:
 
-- `Task Limit`;
-- `Tasks Completed`;
-- `Cycle Limit`;
-- `Cycles Completed`;
-- `File Change Limit`, если применимо;
-- `Files Changed`, если применимо;
-- `Time Limit`, если применимо;
-- `Time Used`, если применимо;
-- `Budget Status`.
+- `Active Mission Run ID`;
+- `Active Mission Run Reference`;
+- `Last Mission Run ID`;
+- `Last Mission Run Reference`;
+- `Last Run Status`;
+- `Last Run Result`.
+
+Mission State может кратко ссылаться на run status, но не должен дублировать run-specific typed budget, autonomy level or allowed scope из `MISSION_RUN.md`.
 
 ### Active Artifacts
 
@@ -2356,7 +2376,7 @@ Mission → Roadmap / Review / Backlog Item → Task
 Допустимые переходы статусов:
 
 - `Planned` → `Ready`, когда зависимости закрыты и Source Of Work подтверждён.
-- `Ready` → `In Progress`, когда Studio Director запускает Single-Step цикл и назначает Implementer через Task Specification.
+- `Ready` → `In Progress`, когда Studio Director запускает Mission Run cycle в разрешённом autonomy level и назначает Implementer через Task Specification.
 - `In Progress` → `Validation`, когда Implementer завершил работу и подготовил Implementation Report.
 - `Validation` → `Done`, когда Validator подтвердил результат.
 - `Validation` → `Blocked`, если Validator отклонил результат или требуется решение другой роли.
@@ -2364,6 +2384,8 @@ Mission → Roadmap / Review / Backlog Item → Task
 - `In Progress` → `Blocked`, если Implementer обнаружил blocker, выход за scope или необходимость решения Product Owner / Solution Architect.
 
 В Single-Step режиме после любого перехода в `Done` или `Blocked` Mission обязана остановиться и зафиксировать Mission Execution Record.
+
+В Bounded Multi-Cycle и Full Mission режимах переход в `Done` не даёт роли права самостоятельно начать следующую backlog item; Studio Director должен проверить autonomy level, Typed Budget, stop conditions, Source Of Work, trace и scope boundaries перед продолжением.
 
 ### Execution Order
 
@@ -2410,11 +2432,239 @@ Mission → Roadmap / Review / Backlog Item → Task
 
 ---
 
-# Artifact 16. Mission Review (`MISSION_REVIEW.md`)
+# Artifact 16. Mission Run Authorization (`MISSION_RUN.md`)
 
 ## Назначение
 
-Mission Review фиксирует обзор Mission после цикла, milestone, блокера, исчерпания бюджета автономности или завершения Mission.
+Mission Run Authorization фиксирует параметры конкретного запуска Mission.
+
+Mission существует как долгоживущий объект работы. Mission Run является экземпляром выполнения этой Mission.
+
+Одна Mission может иметь несколько Mission Run за время своей жизни. Каждый Mission Run должен иметь отдельный authorization record.
+
+Mission Run Authorization должен существовать до выбора backlog item для выполнения. Mission не может стартовать без `MISSION_RUN.md`.
+
+`MISSION_RUN.md` хранит run-specific параметры: autonomy level, allowed scope, typed budget, stop conditions, run status and run result.
+
+`MISSION_RUN.md` не заменяет `MISSION.md`, `MISSION_STATE.md`, `MISSION_BACKLOG.md`, Task Specification, Implementation Report, Validation Report или `MISSION_REVIEW.md`.
+
+Рекомендуемое расположение для нескольких запусков одной Mission:
+
+```text
+documents/missions/<MISSION_ID>/runs/<RUN_ID>/MISSION_RUN.md
+```
+
+Если Mission имеет только один запуск, допускается ссылаться на этот run как на active or latest Mission Run, но каждый новый запуск должен иметь собственный `MISSION_RUN.md`.
+
+## Этап создания
+
+Отдельный режим — Mission Mode, после Mission Planning / Backlog Generation и перед выполнением backlog items.
+
+Не является этапом из `LIFECYCLE.md`.
+
+## Владелец
+
+Studio Director.
+
+Studio Director создаёт Mission Run Authorization перед запуском Mission Run.
+
+## Является источником истины для
+
+- Mission Run ID;
+- Mission ID, к которой относится запуск;
+- Autonomy Level конкретного запуска;
+- Allowed Scope конкретного запуска;
+- Typed Budget конкретного запуска;
+- Stop Conditions конкретного запуска;
+- Run Status;
+- Created By;
+- Created At;
+- параметров запуска;
+- результата запуска.
+
+Mission Run Authorization является единственным источником истины для run-specific autonomy level and typed budget.
+
+## Каноническая структура
+
+### Metadata
+
+Обязательные поля:
+
+- `Project ID`;
+- `Mission ID`;
+- `Mission Run ID`;
+- `Version`;
+- `Creation Date`;
+- `Created By: Studio Director`;
+- `Created At`;
+- `Source Artifacts`;
+- `Source Of Work`.
+
+### Mission Run Authorization
+
+Обязательные поля:
+
+- `Mission Run ID`;
+- `Mission ID`;
+- `Autonomy Level`;
+- `Allowed Scope`;
+- `Typed Budget`;
+- `Stop Conditions`;
+- `Run Status`;
+- `Created By`;
+- `Created At`.
+
+Допустимые значения `Autonomy Level`:
+
+- `Single-Step Mission`;
+- `Bounded Multi-Cycle Mission`;
+- `Full Mission`.
+
+`Full Mission` не является значением по умолчанию и требует явного разрешения.
+
+Допустимые значения `Run Status`:
+
+- `Authorized`;
+- `In Progress`;
+- `Paused`;
+- `Completed`;
+- `Stopped`;
+- `Blocked`;
+- `Expired`;
+- `Superseded`.
+
+### Allowed Scope
+
+Границы конкретного запуска.
+
+Обязательные поля:
+
+- `Mission Scope Reference`;
+- `Allowed Backlog Items`;
+- `Allowed Roadmap Stage`;
+- `Allowed File / Artifact Scope`, если применимо;
+- `Out Of Run Scope`;
+- `Scope Protection Notes`.
+
+Allowed Scope не может расширять Mission scope из `MISSION.md`.
+
+### Typed Budget
+
+Typed Budget конкретного запуска.
+
+Budget принадлежит Mission Run Authorization, а не Mission Definition. Каждая категория budget независима и должна фиксироваться отдельно.
+
+Обязательные категории:
+
+- `Work Budget`;
+- `Change Budget`;
+- `Scope Budget`;
+- `Governance Budget`.
+
+`Work Budget`, `Scope Budget` и `Governance Budget` обязательны для каждого Mission Run.
+
+`Change Budget` обязателен для любого Mission Run, который может изменять файлы, артефакты или репозитории. Для strictly read-only или analysis-only запуска допустимо указать `Change Budget: Not Applicable` с причиной.
+
+Обязательные поля:
+
+- `Work Budget`;
+- `Change Budget`;
+- `Scope Budget`;
+- `Governance Budget`;
+- `Budget Exhaustion Rule`.
+
+Рекомендуемые поля `Work Budget`:
+
+- `Max Backlog Items`;
+- `Max Implementation Cycles`;
+- `Max Validation Cycles`;
+- `Max Review Tasks`, если применимо.
+
+Рекомендуемые поля `Change Budget`:
+
+- `Max Files Changed`;
+- `Max Project Implementation Files Changed`, если применимо;
+- `Max Mission Artifact Files Changed`, если применимо;
+- `Max Repositories Touched`.
+
+Рекомендуемые поля `Scope Budget`:
+
+- `Max Roadmap Stages`;
+- `Max Milestones`;
+- `Allowed Milestones`;
+- `Out Of Scope Stages`.
+
+Рекомендуемые поля `Governance Budget`:
+
+- `Max Mission Reviews`;
+- `Max Execution Windows`;
+- `Time Limit`, если применимо;
+- `Authorization Renewal Rule`, если применимо.
+
+Исчерпание любого обязательного budget должно останавливать Mission Run и требовать обновления `MISSION_RUN.md` и Mission Review перед дальнейшей реализацией.
+
+### Stop Conditions
+
+Stop conditions конкретного запуска.
+
+Обязательные поля:
+
+- `Mission-Level Stop Conditions Reference`;
+- `Run-Specific Stop Conditions`;
+- `Product Decision Stop`;
+- `Architecture Blocker Stop`;
+- `Budget Exhaustion Stop`;
+- `Milestone Completion Stop`;
+- `Scope Expansion Stop`.
+
+### Execution Status
+
+Текущее или итоговое состояние запуска.
+
+Обязательные поля:
+
+- `Run Status`;
+- `Started At`, если запуск начался;
+- `Completed At`, если запуск завершён;
+- `Completed Backlog Items`;
+- `Validation Evidence`;
+- `Typed Budget Used`;
+- `Stop Reason`;
+- `Result Summary`.
+
+### Run Results
+
+Итоги запуска.
+
+Обязательные поля:
+
+- `Completed Work`;
+- `Not Completed Work`;
+- `Validation Summary`;
+- `Risks Found`;
+- `Opportunities Found`;
+- `Required Follow-Up`.
+
+Если Mission Run ещё не начался, раздел должен содержать `Not Started` или `Not Applicable`.
+
+## Дополнительные разделы
+
+Допустимые дополнительные разделы:
+
+- `Retrospective Classification`;
+- `Historical Notes`;
+- `Run Decisions`;
+- `Linked Mission Reviews`.
+
+Дополнительные разделы не должны превращать Mission Run Authorization в Mission Definition, Backlog, Implementation Report or Validation Report.
+
+---
+
+# Artifact 17. Mission Review (`MISSION_REVIEW.md`)
+
+## Назначение
+
+Mission Review фиксирует обзор Mission после цикла, milestone, блокера, исчерпания обязательного budget текущего Mission Run или завершения Mission.
 
 Mission Review нужен, чтобы Studio Director мог принять процессное решение: продолжить Mission, остановить Mission, завершить Mission, подготовить эскалацию или открыть новую Mission.
 
@@ -2441,11 +2691,13 @@ Studio Director может использовать входы Delivery Planner,
 - оставшихся задач;
 - новых рисков;
 - stop condition check;
-- использованного бюджета автономности;
+- краткого review summary для связанного Mission Run;
 - найденных Opportunities;
 - решения о продолжении, остановке или завершении Mission.
 
 Mission Review не заменяет Validation Report, Implementation Report, Mission Backlog, Mission State или Project Memory.
+
+Mission Review не заменяет `MISSION_RUN.md`. Если review относится к конкретному запуску, он должен ссылаться на Mission Run Authorization.
 
 ## Каноническая структура
 
@@ -2465,6 +2717,8 @@ Mission Review не заменяет Validation Report, Implementation Report, M
 
 Обязательные поля:
 
+- `Mission Run ID`;
+- `Mission Run Authorization Reference`;
 - `Reviewed Cycle`;
 - `Reviewed Milestone`;
 - `Reviewed Tasks`;
@@ -2507,6 +2761,10 @@ Mission Review не заменяет Validation Report, Implementation Report, M
 
 В Single-Step режиме один Mission Execution Record соответствует одной backlog item.
 
+В Bounded Multi-Cycle режиме один Mission Run может содержать несколько Mission Execution Records, но их количество не должно превышать заданный Work Budget.
+
+В Full Mission режиме Mission Execution Records продолжаются до достижения цели Mission или stop condition; этот режим не является режимом по умолчанию.
+
 ### Remaining Work
 
 Для каждой оставшейся задачи обязательны поля:
@@ -2531,14 +2789,16 @@ Mission Review не заменяет Validation Report, Implementation Report, M
 
 Если рисков и блокеров нет, раздел должен содержать `None`.
 
-### Autonomy Budget Review
+### Typed Budget Review
 
 Обязательные поля:
 
-- `Tasks Completed`;
-- `Cycles Completed`;
-- `Files Changed`, если применимо;
-- `Time Used`, если применимо;
+- `Mission Run ID`;
+- `Mission Run Authorization Reference`;
+- `Work Budget Used`;
+- `Change Budget Used`;
+- `Scope Budget Used`;
+- `Governance Budget Used`;
 - `Budget Status`;
 - `Budget Exhausted: Yes / No`.
 
@@ -2644,6 +2904,9 @@ Mission State
     ↔
 
 Mission Backlog
+    ↓
+
+Mission Run Authorization
     ↓
 
 Task Specification
@@ -2769,7 +3032,10 @@ Project State не должен дублировать содержимое ка
 1. `MISSION.md`
 2. `MISSION_STATE.md`
 3. `MISSION_BACKLOG.md`
-4. `MISSION_REVIEW.md` после первого Mission Review или завершения первого цикла
+4. `MISSION_RUN.md` для каждого авторизованного Mission Run
+5. `MISSION_REVIEW.md` после первого Mission Review или завершения первого цикла
+
+Mission Run не может стартовать без `MISSION_RUN.md`.
 
 Mission-артефакты не заменяют PRD, Architecture Document, Backlog, Task Specifications, Implementation Reports, Validation Reports, Release Package или Project Memory.
 

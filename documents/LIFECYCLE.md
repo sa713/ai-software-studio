@@ -1,5 +1,5 @@
 # LIFECYCLE.md
-v0.1
+v0.4
 2026-06-19
 
 ## Назначение
@@ -31,6 +31,14 @@ Task — единица работы.
 
 Mission — источник связанной работы.
 
+Mission Run — экземпляр выполнения Mission.
+
+Mission существует постоянно на протяжении крупной цели.
+
+Mission Run существует во время конкретного запуска Mission и сохраняется в артефактах как запись authorization, параметров и результата запуска.
+
+Одна Mission может иметь несколько Mission Run за время своей жизни.
+
 Mission Mode не заменяет основной жизненный цикл продукта, не создаёт новую каноническую роль, не отменяет Source Of Work и не отменяет review-gates. Все реализации внутри Mission продолжают выполняться как обычные задачи через Planning, Implementation, Validation и связанные артефакты.
 
 Mission не даёт права:
@@ -46,6 +54,170 @@ Mission не даёт права:
 
 ---
 
+# Уровни автономности Mission Mode
+
+Каждый Mission Run обязан иметь явно указанный autonomy level до начала выполнения backlog items.
+
+Autonomy level определяет, сколько работы Студия может выполнить за один Mission Run и когда она обязана остановиться.
+
+Autonomy level фиксируется в Mission Run Authorization (`MISSION_RUN.md`) и контролируется Studio Director.
+
+## Single-Step Mission
+
+Single-Step Mission — самый строгий уровень автономности.
+
+Один Mission Run выполняет только одну backlog item.
+
+После завершения одной backlog item Mission обязана остановиться, даже если backlog содержит следующие готовые задачи.
+
+Single-Step Mission подходит для:
+
+- первого запуска новой Mission;
+- рискованных изменений;
+- проверки нового процесса;
+- ситуаций, где нужен плотный контроль пользователя.
+
+Single-Step Mission обязана остановиться, если:
+
+- завершена одна backlog item;
+- исчерпан любой обязательный budget из Typed Budget;
+- достигнут milestone;
+- сработал любой stop condition;
+- требуется продуктовое, архитектурное или процессное решение вне полномочий текущей роли.
+
+## Bounded Multi-Cycle Mission
+
+Bounded Multi-Cycle Mission — ограниченный многоцикловый уровень автономности.
+
+Один Mission Run может выполнить несколько backlog items подряд, если они находятся внутри Mission scope, имеют Source Of Work, сохраняют trace и проходят обычные validation gates.
+
+Количество циклов ограничено заранее заданным Typed Budget.
+
+Bounded Multi-Cycle Mission обязана остановиться, если:
+
+- исчерпан любой обязательный budget из Typed Budget;
+- завершён milestone;
+- сработал stop condition;
+- требуется продуктовое решение;
+- следующая backlog item выходит за выбранный autonomy level или scope Mission.
+
+Bounded Multi-Cycle Mission подходит для:
+
+- стабильных roadmap stages;
+- технического долга;
+- тестового покрытия;
+- последовательных задач с понятными зависимостями.
+
+## Full Mission
+
+Full Mission — максимальный уровень автономности Mission Mode.
+
+Full Mission может работать до достижения всей цели Mission.
+
+Full Mission допустима только для хорошо ограниченных Mission с низким риском.
+
+Full Mission всё равно обязана соблюдать:
+
+- Source Of Work;
+- scope protection;
+- stop conditions;
+- validation gates;
+- Typed Budget текущего Mission Run.
+
+Full Mission не является режимом по умолчанию. На этапе v0.2 он описан как осторожный будущий режим и требует явного разрешения перед запуском.
+
+---
+
+# Typed Budget Model
+
+Typed Budget Model описывает budget конкретного Mission Run.
+
+Budget принадлежит Mission Run Authorization (`MISSION_RUN.md`), а не Mission Definition. Mission может задавать только mission-level guardrails: допустимый roadmap stage, общие ограничения, stop conditions и максимальные рамки для будущих запусков.
+
+Каждый Mission Run обязан фиксировать budget в независимых категориях.
+
+## Work Budget
+
+Work Budget ограничивает объём выполняемой работы.
+
+Примеры:
+
+- max backlog items;
+- max implementation cycles;
+- max validation cycles;
+- max review tasks, если review является частью запуска.
+
+Work Budget обязателен для каждого Mission Run.
+
+## Change Budget
+
+Change Budget ограничивает объём изменений.
+
+Примеры:
+
+- max files changed;
+- max repositories touched;
+- max project implementation files changed;
+- max mission artifact files changed, если это важно для запуска.
+
+Change Budget обязателен для любого Mission Run, который может изменять файлы, артефакты или репозитории. Для strictly read-only или analysis-only запуска Change Budget может быть указан как `Not Applicable` с причиной.
+
+## Scope Budget
+
+Scope Budget ограничивает масштаб Mission Run.
+
+Примеры:
+
+- max roadmap stages;
+- max milestones;
+- max product areas;
+- allowed milestone set.
+
+Scope Budget обязателен для каждого Mission Run.
+
+## Governance Budget
+
+Governance Budget ограничивает длительность управленческого цикла.
+
+Примеры:
+
+- max mission reviews;
+- max execution windows;
+- max authorization renewals;
+- time limit, если он нужен.
+
+Governance Budget обязателен для каждого Mission Run. Конкретный time limit может отсутствовать, если запуск ограничен execution windows, mission reviews или другим измеримым governance limit.
+
+## Budget Exhaustion
+
+Studio Director проверяет Typed Budget:
+
+- перед запуском Mission Run;
+- перед выбором каждой следующей backlog item;
+- после каждого Validation result;
+- во время Mission Review;
+- при любом событии, которое может изменить расход Work, Change, Scope или Governance Budget.
+
+Исчерпание любого обязательного budget останавливает Mission Run.
+
+Если optional budget не задан, он должен быть явно отмечен как `Not Applicable` в `MISSION_RUN.md`; отсутствие budget без объяснения считается неполной Authorization.
+
+После остановки по budget Studio Director обязан обновить `MISSION_RUN.md`, зафиксировать stop reason и подготовить Mission Review перед дальнейшей реализацией.
+
+## Повышение уровня автономности
+
+Ни одна роль не может самостоятельно повышать уровень автономности активного Mission Run.
+
+Single-Step Mission нельзя самовольно превратить в Bounded Multi-Cycle Mission.
+
+Bounded Multi-Cycle Mission нельзя самовольно превратить в Full Mission.
+
+Повышение autonomy level требует явного разрешения пользователя или Studio Director в рамках заранее заданных полномочий Mission.
+
+Если требуемый уровень автономности не разрешён, Mission обязана остановиться и зафиксировать вопрос в Mission Review.
+
+---
+
 # Жизненный цикл Mission
 
 Mission Mode использует следующий служебный lifecycle поверх Task Mode:
@@ -53,9 +225,10 @@ Mission Mode использует следующий служебный lifecycl
 1. Mission Intake
 2. Mission Planning
 3. Backlog Generation
-4. Implementation Loop
-5. Mission Review
-6. Mission Complete
+4. Mission Run Authorization
+5. Implementation Loop
+6. Mission Review
+7. Mission Complete
 
 Mission lifecycle не является заменой основного жизненного цикла продукта. Он управляет последовательностью связанных задач внутри уже подтверждённого Source Of Work, roadmap, review или другого допустимого источника.
 
@@ -84,7 +257,7 @@ Studio Director анализирует входные данные и опред
 - scope;
 - milestones;
 - ограничения;
-- бюджет автономности;
+- mission-level budget guardrails;
 - stop conditions;
 - критерии завершения.
 
@@ -107,10 +280,49 @@ Mission → Roadmap / Review / Backlog Item → Task
 
 Выход:
 
-- `MISSION_BACKLOG.md`;
-- Task Specifications для задач, готовых к Implementation.
+- `MISSION_BACKLOG.md`.
 
-## 4. Implementation Loop
+Task Specifications создаются после Mission Run Authorization и выбора backlog item для выполнения.
+
+## 4. Mission Run Authorization
+
+Mission Run Authorization создаёт конкретный запуск Mission.
+
+Mission не может начать выполнение backlog items без `MISSION_RUN.md`.
+
+Mission Run Authorization должен существовать между Mission и выбором backlog item для выполнения.
+
+Обязательная цепочка запуска:
+
+```text
+Mission
+↓
+Mission Run Authorization
+↓
+Mission Review / Current Mission Status
+↓
+Backlog Item
+```
+
+Studio Director создаёт Mission Run Authorization и фиксирует:
+
+- Mission Run ID;
+- Mission ID;
+- Autonomy Level;
+- Allowed Scope;
+- Typed Budget;
+- Stop Conditions;
+- Run Status;
+- Created By;
+- Created At.
+
+Mission Run Authorization не заменяет Mission Definition. Mission Definition хранит цель, roadmap, границы и mission-level состояние. Mission Run Authorization хранит параметры конкретного запуска, typed budget, autonomy level, execution status and run result.
+
+Выход:
+
+- `MISSION_RUN.md`.
+
+## 5. Implementation Loop
 
 Для каждой задачи внутри Mission применяется обычный Task Mode:
 
@@ -127,9 +339,9 @@ Mission → Roadmap / Review / Backlog Item → Task
 - Validation Reports;
 - обновлённые Mission State, Mission Backlog и Project Memory, если требуется.
 
-## 4.1 Single-Step Autonomous Mission Loop
+## 5.1 Single-Step Autonomous Mission Loop
 
-Single-Step Autonomous Mission Loop — первый допустимый уровень автономности Mission Mode.
+Single-Step Autonomous Mission Loop — строгий уровень автономности Mission Mode.
 
 Один запуск Mission в Single-Step режиме может выполнить не больше одной backlog item.
 
@@ -137,6 +349,8 @@ Single-Step Autonomous Mission Loop — первый допустимый уро
 
 ```text
 Mission State
+↓
+Mission Run Authorization
 ↓
 Mission Review
 ↓
@@ -160,11 +374,13 @@ Studio Director управляет циклом, но не реализует з
 Перед запуском Single-Step цикла Studio Director обязан:
 
 - открыть Mission;
+- создать или открыть `MISSION_RUN.md`;
 - прочитать `MISSION_STATE.md`;
 - прочитать последний `MISSION_REVIEW.md`;
+- проверить, что Mission Run Authorization разрешает Single-Step Mission;
 - определить следующую backlog item из `MISSION_BACKLOG.md`;
-- проверить бюджет автономности;
-- проверить stop conditions;
+- проверить Typed Budget из Mission Run Authorization;
+- проверить stop conditions из Mission Run Authorization и Mission Definition;
 - проверить, что backlog item имеет Source Of Work и trace;
 - назначить Delivery Planner для подготовки Task Specification.
 
@@ -189,33 +405,87 @@ Single-Step Mission обязана остановиться, если:
 - backlog item заблокирована;
 - Validator отклонил результат;
 - требуется решение Product Owner;
-- превышен бюджет автономности;
+- исчерпан обязательный budget из Typed Budget;
 - обнаружен архитектурный риск;
 - сработал любой stop condition Mission.
 
-Single-Step Loop не является Multi-Step Autonomy и не даёт права выполнять несколько задач подряд.
+Single-Step Loop не даёт права выполнять несколько задач подряд.
 
-## 5. Mission Review
+## 5.2 Bounded Multi-Cycle Mission Loop
+
+Bounded Multi-Cycle Mission Loop позволяет одному Mission Run выполнить несколько backlog items подряд в пределах заранее заданного Typed Budget.
+
+Официальный цикл повторяется для каждой выбранной backlog item:
+
+```text
+Mission State
+↓
+Mission Run Authorization
+↓
+Mission Review / Current Mission Status
+↓
+Выбор следующей backlog item
+↓
+Delivery Planner
+↓
+Task Specification
+↓
+Implementer
+↓
+Validator
+↓
+Mission State Update
+↓
+Typed Budget and Stop Condition Check
+↓
+Continue or Stop
+```
+
+Перед каждым следующим циклом Studio Director обязан проверить:
+
+- Mission Run Authorization exists and is active;
+- выбранный autonomy level в `MISSION_RUN.md`: Bounded Multi-Cycle Mission;
+- оставшийся Typed Budget из `MISSION_RUN.md`;
+- stop conditions из Mission Run Authorization и Mission Definition;
+- достижение milestone;
+- Source Of Work и trace следующей backlog item;
+- что следующая backlog item не расширяет scope Mission.
+
+Bounded Multi-Cycle Mission обязана остановиться при исчерпании любого обязательного budget, завершении milestone, stop condition или необходимости продуктового решения.
+
+## 5.3 Full Mission Loop
+
+Full Mission Loop может продолжаться до достижения всей цели Mission.
+
+Full Mission не является режимом по умолчанию и не должен использоваться без явного разрешения.
+
+Даже в Full Mission каждая задача выполняется через обычный Task Mode и проходит Validation.
+
+Full Mission также требует `MISSION_RUN.md` с явным Autonomy Level: Full Mission, Allowed Scope, Typed Budget and Stop Conditions.
+
+## 6. Mission Review
 
 После каждого цикла или milestone Studio Director выполняет обзор Mission.
 
 Проверяется:
 
 - что сделано;
+- какой Mission Run выполняется или завершён;
 - какие риски появились;
 - какие задачи остались;
 - есть ли блокеры;
 - достигнут ли milestone;
-- не исчерпан ли бюджет автономности;
+- не исчерпан ли обязательный budget из Typed Budget;
 - не требуется ли продуктовое или архитектурное решение.
 
 Выход:
 
 - `MISSION_REVIEW.md`;
 - обновлённый `MISSION_STATE.md`;
+- обновлённый `MISSION_RUN.md`, если изменился статус запуска, использованный Typed Budget or stop reason;
 - процессное решение: продолжить, остановить, завершить или эскалировать.
 
-## 6. Mission Complete
+## 7. Mission Complete
 
 Mission завершается, если:
 
@@ -236,12 +506,12 @@ Mission завершается, если:
 
 Каждая Mission должна иметь:
 
-- бюджет автономности;
+- mission-level budget guardrails или указание, что concrete budget задаётся только в `MISSION_RUN.md`;
 - stop conditions;
 - критерии завершения;
 - scope boundaries.
 
-Бюджет автономности может ограничивать количество задач подряд, количество циклов, количество изменённых файлов, календарное время или другой измеримый ресурс.
+Concrete Typed Budget задаётся в Mission Run Authorization. Mission-level guardrails могут ограничивать допустимые максимумы для будущих запусков, но не заменяют Work, Change, Scope and Governance Budget конкретного Mission Run.
 
 Mission обязана остановиться, если:
 
@@ -250,7 +520,7 @@ Mission обязана остановиться, если:
 - roadmap противоречит проекту;
 - есть несколько равноценных направлений развития;
 - достигнут milestone;
-- исчерпан бюджет автономности.
+- исчерпан любой обязательный budget текущего Mission Run.
 
 Новые идеи, найденные во время Mission, фиксируются как Opportunity. Opportunity не расширяет Mission автоматически и требует решения Product Owner.
 

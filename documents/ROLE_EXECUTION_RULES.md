@@ -1,5 +1,5 @@
 # ROLE_EXECUTION_RULES.md
-v0.1
+v0.4
 2026-06-19
 
 ## Назначение
@@ -344,13 +344,19 @@ Mission Mode является надстройкой над Task Mode.
 
 Если роль назначена внутри активной Mission, агент обязан:
 
-1. Прочитать `MISSION.md`, `MISSION_STATE.md`, `MISSION_BACKLOG.md` и последний `MISSION_REVIEW.md`, если он уже существует.
-2. Определить, какая обычная роль и какой обычный этап Task Mode применимы к текущей задаче.
-3. Проверить, что задача имеет Source Of Work и trace до Mission и исходного roadmap, review, Backlog item или другого подтверждённого источника.
-4. Проверить, что действие находится внутри scope boundaries Mission.
-5. Проверить, что действие не нарушает бюджет автономности и stop conditions.
+1. Прочитать `MISSION.md`, `MISSION_STATE.md`, активный `MISSION_RUN.md`, `MISSION_BACKLOG.md` и последний `MISSION_REVIEW.md`, если он уже существует.
+2. Проверить, что Mission Run Authorization существует и разрешает текущую работу.
+3. Определить выбранный autonomy level Mission Run из `MISSION_RUN.md`.
+4. Определить, какая обычная роль и какой обычный этап Task Mode применимы к текущей задаче.
+5. Проверить, что задача имеет Source Of Work и trace до Mission и исходного roadmap, review, Backlog item или другого подтверждённого источника.
+6. Проверить, что действие находится внутри scope boundaries Mission and Allowed Scope Mission Run.
+7. Проверить, что действие не нарушает выбранный autonomy level, Typed Budget and stop conditions from `MISSION_RUN.md`.
 
 Mission не является Task. Mission не заменяет Task Specification, Backlog, Implementation Report или Validation Report.
+
+Mission Run не является Mission. Mission Run является конкретным запуском Mission и хранит run-specific параметры.
+
+Если `MISSION_RUN.md` отсутствует, неполон или противоречит Mission scope, агент должен остановиться и подготовить возврат через Studio Director. Агент не должен начинать или продолжать task внутри Mission без Mission Run Authorization.
 
 Каждая задача внутри Mission должна сохранять trace:
 
@@ -362,9 +368,39 @@ Mission → Roadmap / Review / Backlog Item → Task
 
 Если во время работы обнаружена новая идея, она фиксируется как Opportunity. Opportunity не расширяет Mission автоматически и требует решения Product Owner, если должна стать roadmap item, Backlog item, Task или новой Mission.
 
-В Single-Step Autonomous Mission Loop один запуск Mission ограничен одной backlog item.
+Ни одна роль не может самостоятельно повышать уровень автономности Mission Run.
+
+Запрещено:
+
+- превращать `Single-Step Mission` в `Bounded Multi-Cycle Mission` без явного разрешения;
+- превращать `Bounded Multi-Cycle Mission` в `Full Mission` без явного разрешения;
+- выбирать или начинать следующую backlog item, если выбранный autonomy level требует остановки;
+- использовать successful Validation как автоматическое разрешение на повышение autonomy level.
+
+Повышение autonomy level требует явного разрешения пользователя или Studio Director в рамках заранее заданных полномочий Mission Run Authorization.
+
+Если агент видит необходимость повысить autonomy level, он должен остановиться и подготовить вопрос через Studio Director. Агент не должен продолжать работу на основании собственного предположения.
+
+В Single-Step Mission один запуск Mission ограничен одной backlog item.
 
 После завершения назначенной backlog item любая роль должна остановиться и передать результат Studio Director для обновления Mission State и Mission Review. Роль не должна самостоятельно выбирать или начинать следующую backlog item.
+
+Ни одна роль не может самостоятельно увеличивать Typed Budget активного Mission Run.
+
+Запрещено:
+
+- увеличивать Work Budget, Change Budget, Scope Budget или Governance Budget без нового authorization;
+- продолжать работу после исчерпания обязательного budget;
+- трактовать successful Validation как разрешение на расширение budget;
+- переносить неиспользованный budget из другой Mission или другого Mission Run без явной Authorization.
+
+Изменение budget требует нового Mission Run Authorization или отдельного решения Studio Director, если такое решение заранее разрешено политикой Mission.
+
+Если агент видит необходимость увеличить budget, он должен остановиться и подготовить вопрос через Studio Director. Агент не должен продолжать работу на основании собственного предположения.
+
+В Bounded Multi-Cycle Mission следующая backlog item может быть выбрана только Studio Director после проверки `MISSION_RUN.md`, Typed Budget, stop conditions, Source Of Work, trace и scope boundaries.
+
+В Full Mission следующая backlog item также не может обходить Source Of Work, scope protection, stop conditions и validation gates. Full Mission не является режимом по умолчанию.
 
 Агент обязан остановить работу внутри Mission и подготовить возврат или эскалацию через Studio Director, если:
 
@@ -373,7 +409,9 @@ Mission → Roadmap / Review / Backlog Item → Task
 - roadmap противоречит проекту;
 - есть несколько равноценных направлений развития;
 - достигнут milestone;
-- исчерпан бюджет автономности;
+- исчерпан обязательный budget из Typed Budget;
+- выполнение достигло или превысило выбранный autonomy level;
+- отсутствует или исчерпан Mission Run Authorization;
 - задача требует расширения roadmap, изменения vision, добавления крупной функции вне roadmap или изменения продуктовой стратегии.
 
 ---

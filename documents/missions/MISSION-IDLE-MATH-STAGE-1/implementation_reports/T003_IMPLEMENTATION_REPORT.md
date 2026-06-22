@@ -1,0 +1,113 @@
+# Implementation Report: MISSION-IDLE-MATH-STAGE-1-T003 — Add XCTest Target for Pure Logic
+
+## Metadata
+
+- Project ID: Idle Math Lab
+- Backlog Task ID: MISSION-IDLE-MATH-STAGE-1-T003
+- Task Specification: `documents/missions/MISSION-IDLE-MATH-STAGE-1/task_specs/T003_ADD_XCTEST_TARGET_FOR_PURE_LOGIC.md`
+- Version: v0.1
+- Creation Date: 2026-06-22
+- Author: Implementer
+- Source Artifacts:
+  - `documents/missions/MISSION-IDLE-MATH-STAGE-1/MISSION.md`
+  - `documents/missions/MISSION-IDLE-MATH-STAGE-1/MISSION_BACKLOG.md`
+  - `documents/missions/MISSION-IDLE-MATH-STAGE-1/task_specs/T003_ADD_XCTEST_TARGET_FOR_PURE_LOGIC.md`
+  - `/Users/sa/Documents/codex/ios/Idle Math Lab/IDLE_MATH_LAB_ROADMAP.md`
+
+## Completed Work
+
+- Item: Added `Idle Math LabTests` XCTest unit-test target to the Xcode project.
+  - Related Requirement: Unit-test target named `Idle Math LabTests`.
+  - Related Acceptance Criteria: Project contains `Idle Math LabTests` XCTest unit-test target.
+  - Notes: Target is configured as `com.apple.product-type.bundle.unit-test` with dependency on the app target.
+- Item: Added shared scheme test action for `Idle Math LabTests`.
+  - Related Requirement: Test target discoverable by `xcodebuild test`.
+  - Related Acceptance Criteria: Target is ready for CLI test execution.
+  - Notes: The existing app scheme now includes the test target.
+- Item: Added a pure-logic smoke test.
+  - Related Requirement: Initial test must be pure-logic oriented.
+  - Related Acceptance Criteria: `Idle Math LabTests` contains at least one XCTest source file.
+  - Notes: The smoke test imports `IdleMathLab` and checks `GameState.fresh` defaults.
+
+## Modified Files
+
+- File: `/Users/sa/Documents/codex/ios/Idle Math Lab/Idle Math Lab.xcodeproj/project.pbxproj`
+  - Change Type: Modified
+  - Summary: Added test target objects, product reference, group, build phases, target dependency and build configurations.
+  - Related Requirement: Unit-test target named `Idle Math LabTests`.
+- File: `/Users/sa/Documents/codex/ios/Idle Math Lab/Idle Math Lab.xcodeproj/xcshareddata/xcschemes/Idle Math Lab.xcscheme`
+  - Change Type: Added
+  - Summary: Added shared scheme with build and test actions for the app and test target.
+  - Related Requirement: Test target discoverable by `xcodebuild test`.
+- File: `/Users/sa/Documents/codex/ios/Idle Math Lab/Idle Math LabTests/IdleMathLabTests.swift`
+  - Change Type: Added
+  - Summary: Added a smoke XCTest for `GameState.fresh`.
+  - Related Requirement: Initial test must be pure-logic oriented.
+
+## Tests Added
+
+- Test: `IdleMathLabTests.testFreshStateExposesPureLogicDefaults`
+  - Type: XCTest unit test
+  - Covers: Test target execution and pure logic app-module access.
+  - Result: Passed via `xcodebuild test -project "Idle Math Lab.xcodeproj" -scheme "Idle Math Lab" -destination "platform=iOS Simulator,name=iPhone 17"`.
+
+## Acceptance Criteria Status
+
+- Criterion: `Idle Math Lab.xcodeproj/project.pbxproj` contains an `Idle Math LabTests` XCTest unit-test target.
+  - Status: Passed
+  - Verification Method: `xcodebuild -list -project "Idle Math Lab.xcodeproj"` and project file inspection.
+  - Evidence: `xcodebuild -list` shows targets `Idle Math Lab` and `Idle Math LabTests`.
+  - Notes: None.
+- Criterion: `Idle Math LabTests` contains at least one XCTest source file for pure logic smoke coverage.
+  - Status: Passed
+  - Verification Method: Inspect `Idle Math LabTests/IdleMathLabTests.swift`.
+  - Evidence: `IdleMathLabTests.swift` contains a `GameState.fresh` smoke test.
+  - Notes: None.
+- Criterion: The test target does not introduce UI-test infrastructure or product behavior changes.
+  - Status: Passed
+  - Verification Method: Inspect changed files.
+  - Evidence: Only Xcode metadata, shared scheme and test file were added for this task.
+  - Notes: Existing pre-mission app code changes remain outside T003.
+- Criterion: The new target is ready for T004 base pure-logic test coverage.
+  - Status: Passed
+  - Verification Method: Run `xcodebuild test`.
+  - Evidence: `** TEST SUCCEEDED **`; smoke test passed on iPhone 17 simulator.
+  - Notes: Initial attempt using iPhone 16 failed because that simulator was unavailable; rerun used available iPhone 17 simulator.
+
+## Technical Decisions
+
+- Decision: Use an XCTest unit-test bundle hosted by the existing app target.
+  - Reason: It allows `@testable import IdleMathLab` without introducing a new framework or package.
+  - Alternatives Considered: Refactor pure logic into a separate framework or duplicate source membership into a standalone test target.
+  - Consequences: Tests can access internal app module logic while avoiding UI-test infrastructure; the app target is built as the host.
+  - Related Files:
+    - `/Users/sa/Documents/codex/ios/Idle Math Lab/Idle Math Lab.xcodeproj/project.pbxproj`
+- Decision: Add a shared scheme.
+  - Reason: `xcodebuild test` needs a test action that includes the new test target.
+  - Alternatives Considered: Rely on autogenerated schemes.
+  - Consequences: CLI validation is explicit and repeatable.
+  - Related Files:
+    - `/Users/sa/Documents/codex/ios/Idle Math Lab/Idle Math Lab.xcodeproj/xcshareddata/xcschemes/Idle Math Lab.xcscheme`
+
+## Deviations
+
+- Deviation: None.
+  - Reason: Not applicable.
+  - Impact: None.
+  - Approved By: Not applicable.
+  - Follow-Up: None.
+
+## Technical Debt Found
+
+- Debt: None introduced by T003.
+  - Location: Not applicable.
+  - Impact: None.
+  - Consequences: None.
+  - Recommendation: Continue with T004 base pure-logic coverage.
+
+## Known Issues
+
+- Issue: The first test command used unavailable destination `iPhone 16`.
+  - Impact: Initial test invocation failed before build/test execution.
+  - Workaround: Use an available simulator destination, verified with `iPhone 17`.
+  - Required Follow-Up: Prefer available simulator names in future validation commands.

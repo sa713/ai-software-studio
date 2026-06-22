@@ -1,12 +1,12 @@
 # MISSION.md
-v0.1
+v0.4
 2026-06-22
 
 ## Metadata
 
 - Project ID: Idle Math Lab
 - Mission ID: MISSION-IDLE-MATH-STAGE-1
-- Version: v0.1
+- Version: v0.3
 - Creation Date: 2026-06-22
 - Author: Studio Director
 - Source Artifacts:
@@ -15,6 +15,8 @@ v0.1
   - `documents/ARTIFACTS.md`
   - `documents/LIFECYCLE.md`
   - `documents/AGENTS.md`
+  - `documents/missions/MISSION-IDLE-MATH-STAGE-1/MISSION_RETROSPECTIVE.md`
+  - `documents/missions/MISSION-IDLE-MATH-STAGE-1/runs/RUN-001/MISSION_RUN.md`
 - Source Of Work:
   - Source: `ideas/roadmap_v03_mission_mode.md`
   - Source Type: Roadmap
@@ -88,7 +90,7 @@ v0.1
   - Outputs: `MISSION.md`.
   - Responsible Role: Studio Director.
 - Mission Planning:
-  - Purpose: Определить scope, milestone, budget автономности, stop conditions и completion criteria.
+  - Purpose: Определить scope, milestone, mission-level budget policy, stop conditions и completion criteria.
   - Inputs: `MISSION.md`, Idle Math Lab roadmap, current project state evidence.
   - Outputs: `MISSION_STATE.md`.
   - Responsible Role: Studio Director.
@@ -97,9 +99,14 @@ v0.1
   - Inputs: Idle Math Lab roadmap Stage 1, completed pre-mission work evidence.
   - Outputs: `MISSION_BACKLOG.md`.
   - Responsible Role: Delivery Planner.
+- Mission Run Authorization:
+  - Purpose: Зафиксировать параметры конкретного запуска Mission до выполнения backlog items.
+  - Inputs: `MISSION.md`, `MISSION_STATE.md`, `MISSION_BACKLOG.md`, mission-level constraints and user authorization.
+  - Outputs: `MISSION_RUN.md`.
+  - Responsible Role: Studio Director.
 - Implementation Loop:
   - Purpose: В будущих шагах выполнять обычные Task через Task Mode.
-  - Inputs: Mission Backlog item, Task Specification, Source Of Work trace.
+  - Inputs: Mission Run Authorization, Mission Backlog item, Task Specification, Source Of Work trace.
   - Outputs: Implementation Reports and Validation Reports.
   - Responsible Role: Delivery Planner, Implementer, Validator.
 - Mission Review:
@@ -112,6 +119,15 @@ v0.1
   - Inputs: Mission Review, Mission State, Mission Backlog, validation evidence.
   - Outputs: Final Mission Review, updated Mission State, Project Memory update request if needed.
   - Responsible Role: Studio Director and Historian.
+
+## Mission Run Policy
+
+- Mission Run Authorization Required: Yes
+- Mission Run Artifact: `documents/missions/MISSION-IDLE-MATH-STAGE-1/runs/<RUN_ID>/MISSION_RUN.md`
+- Allowed Mission Run Scope: Only work inside Stage 1 Technical Foundation and Mission stop/review artifacts.
+- Run-Specific Parameters Location: `MISSION_RUN.md`
+- Authorization Owner: Studio Director
+- Policy Note: This Mission Definition does not store run-specific Autonomy Level, Allowed Scope, Typed Budget, Run Status or run result. Those belong to Mission Run Authorization.
 
 ## Milestones
 
@@ -131,18 +147,17 @@ v0.1
     - Add base pure-logic test coverage.
     - Centralize Gameplay IDs.
 
-## Autonomy Budget
+## Mission-Level Budget Policy
 
-- Task Limit: Maximum 5 implementation tasks in a row.
-- Cycle Limit: Maximum 3 Mission Review cycles before explicit review by Studio Director.
-- File Change Limit: Maximum 25 changed files across the active Mission implementation loop.
-- Time Limit: Not set for this framework step.
-- Other Limits:
-  - Maximum 1 roadmap stage: Stage 1 Technical Foundation.
+- Budget Ownership: Mission Run.
+- Run Budget Location: `documents/missions/MISSION-IDLE-MATH-STAGE-1/runs/<RUN_ID>/MISSION_RUN.md`
+- Concrete Typed Budget: Must be defined in `MISSION_RUN.md`, not in this Mission Definition.
+- Mission-Level Guardrails:
+  - Maximum allowed roadmap scope: Stage 1 Technical Foundation.
   - Stop after Stage 1 milestone completion.
   - No autonomous execution during Mission Framework creation.
-  - Single-Step Mode: one Mission run may execute only one backlog item.
-- Budget Exhaustion Rule: If any budget limit is reached, Mission must stop and prepare `MISSION_REVIEW.md` before further implementation.
+  - A Mission Run requires `MISSION_RUN.md` before implementation.
+- Budget Exhaustion Policy Reference: If any required budget in the active Mission Run is exhausted, Mission must stop and prepare `MISSION_REVIEW.md` before further implementation.
 
 ## Stop Conditions
 
@@ -151,14 +166,14 @@ v0.1
 - roadmap противоречит проекту;
 - есть несколько равноценных направлений развития;
 - достигнут milestone Stage 1 — Technical Foundation;
-- исчерпан бюджет автономности;
+- исчерпан обязательный budget текущего Mission Run;
 - следующая работа выходит за Stage 1 roadmap;
 - следующая работа требует изменения vision, product strategy or major feature scope.
 
 ## Completion Criteria
 
 - Criterion: Mission Definition exists.
-  - Verification Method: `documents/missions/MISSION-IDLE-MATH-STAGE-1/MISSION.md` exists and contains Mission ID, goal, boundaries, budget and stop conditions.
+  - Verification Method: `documents/missions/MISSION-IDLE-MATH-STAGE-1/MISSION.md` exists and contains Mission ID, goal, boundaries, mission-level budget policy and stop conditions.
   - Source: Mission Mode v03 -> Pilot Mission.
 - Criterion: Mission State exists.
   - Verification Method: `MISSION_STATE.md` records created/not-started status and completed pre-mission work.
@@ -190,6 +205,7 @@ v0.1
 
 - Pilot Mission ID: MISSION-IDLE-MATH-STAGE-1
 - Pilot Goal: Завершить Stage 1 из Idle Math Lab roadmap.
-- Autonomous Loop Status: Not Started
-- Single-Step Loop Status: Defined; not executed
-- Next Backlog Item: MISSION-IDLE-MATH-STAGE-1-T003 — Add XCTest Target for Pure Logic
+- Autonomous Loop Status: Completed
+- Retrospective Mission Run: RUN-001, recorded in `runs/RUN-001/MISSION_RUN.md`.
+- Retrospective Finding: Documentation at the time described one backlog item per Mission Run, while the actual pilot run completed T003, T004, T005 and T006 in one bounded run. See `MISSION_RUN.md` for run-specific classification.
+- Next Backlog Item: None inside this Mission.

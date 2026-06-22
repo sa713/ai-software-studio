@@ -1,24 +1,31 @@
 # MISSION_REVIEW.md
-v0.1
+v0.5
 2026-06-22
 
 ## Metadata
 
 - Project ID: Idle Math Lab
 - Mission ID: MISSION-IDLE-MATH-STAGE-1
-- Review ID: MISSION-IDLE-MATH-STAGE-1-REVIEW-000
-- Version: v0.1
+- Review ID: MISSION-IDLE-MATH-STAGE-1-REVIEW-001
+- Version: v0.4
 - Creation Date: 2026-06-22
 - Author: Studio Director
 - Source Artifacts:
   - `documents/missions/MISSION-IDLE-MATH-STAGE-1/MISSION.md`
   - `documents/missions/MISSION-IDLE-MATH-STAGE-1/MISSION_STATE.md`
   - `documents/missions/MISSION-IDLE-MATH-STAGE-1/MISSION_BACKLOG.md`
+  - `documents/missions/MISSION-IDLE-MATH-STAGE-1/runs/RUN-001/MISSION_RUN.md`
+  - `documents/missions/MISSION-IDLE-MATH-STAGE-1/MISSION_RETROSPECTIVE.md`
+  - `documents/missions/MISSION-IDLE-MATH-STAGE-1/task_specs/`
+  - `documents/missions/MISSION-IDLE-MATH-STAGE-1/implementation_reports/`
+  - `documents/missions/MISSION-IDLE-MATH-STAGE-1/validation_reports/`
   - `/Users/sa/Documents/codex/ios/Idle Math Lab/IDLE_MATH_LAB_ROADMAP.md`
 
 ## Review Scope
 
-- Reviewed Cycle: 0 — Startup Review
+- Mission Run ID: RUN-001
+- Mission Run Authorization Reference: `documents/missions/MISSION-IDLE-MATH-STAGE-1/runs/RUN-001/MISSION_RUN.md`
+- Reviewed Cycle: Mission Run cycles 1-3 plus Stage 1 Completion Review
 - Reviewed Milestone: Stage 1 — Technical Foundation
 - Reviewed Tasks:
   - MISSION-IDLE-MATH-STAGE-1-T001 — EconomySnapshot and Income Breakdown
@@ -28,210 +35,263 @@ v0.1
   - MISSION-IDLE-MATH-STAGE-1-T005 — Centralize Gameplay IDs
   - MISSION-IDLE-MATH-STAGE-1-T006 — Stage 1 Completion Review
 - Input Artifacts:
-  - Mission Mode roadmap.
+  - Mission artifacts.
   - Idle Math Lab roadmap.
-  - Current adjacent Idle Math Lab working tree.
-  - Mission artifacts created in this framework step.
+  - Task Specifications, Implementation Reports and Validation Reports from this run.
+  - Idle Math Lab working tree.
 - Limitations:
-  - This is a framework review only.
-  - No Autonomous Loop has been started.
-  - No Task Specifications have been created.
-  - No implementation was performed in this step.
-  - Single-Step Loop is defined but not executed.
+  - T001 and T002 were completed before this Mission Run and remain mixed with this working tree.
+  - Manual playtest of Debug Reset / quit-reopen / tap / passive / Proof was not performed; automated tests cover pure logic and persistence foundation.
+
+## Mission Run Classification
+
+- Actual Mission Run Mode: Bounded Multi-Cycle Mission
+- Classification Source: `MISSION_RUN.md`, `MISSION_RETROSPECTIVE.md`
+- Historical Finding: At launch, Mission Mode documentation described Single-Step Mission. The actual pilot run completed multiple implementation cycles in one bounded run and stopped at the Stage 1 milestone.
+- Full Mission Used: No
+- Stage 2 Launched: No
 
 ## Current Project State
 
-- Idle Math Lab roadmap Stage 1 is Technical Foundation.
-- Visible completed foundation work:
-  - `EconomySnapshot.swift` exists.
-  - `EconomyCalculator.swift` exists.
-  - `GameEngine` exposes `economySnapshot` and delegates income/cost calculations to `EconomyCalculator`.
-  - `GameSaveStore.swift` exists.
-  - `GameEngine` uses `GameSaveStore` for load, save and reset.
-- Visible missing foundation work:
-  - No `Idle Math LabTests` folder or test files found.
-  - No `GameIDs.swift` found.
-  - Base pure-logic tests are not present.
-- Adjacent project status:
-  - `Idle Math Lab.xcodeproj/project.pbxproj` modified.
-  - `Idle Math Lab/GameEngine.swift` modified.
-  - `Idle Math Lab/GameSaveStore.swift` untracked.
+- `GameEngine` delegates economy snapshot, tap income, passive income and Proof reward preview to `EconomyCalculator`.
+- `GameEngine` delegates save/load/reset to `GameSaveStore`; direct `UserDefaults` usage is confined to `GameSaveStore`.
+- `Idle Math LabTests` XCTest unit-test target exists and is included in the shared scheme.
+- Base pure-logic tests cover income, Proof reward, offline cap, save fallback, state decoding, theorem allocation and research project readiness.
+- `GameIDs.swift` centralizes key upgrade, formula focus, scientific paradigm, active function, research project and era ids for core logic.
+- `xcodebuild test -project "Idle Math Lab.xcodeproj" -scheme "Idle Math Lab" -destination "platform=iOS Simulator,name=iPhone 17"` passed after T003, T004 and T005.
 
 ## Completed Work
 
 - Task ID: MISSION-IDLE-MATH-STAGE-1-T001
   - Title: EconomySnapshot and Income Breakdown
   - Source Of Work: Idle Math Lab roadmap Stage 1 and Immediate Implementation Queue item 1.
-  - Validation Result: Not validated by this Mission; treated as completed pre-mission work.
-  - Result Summary: Economy snapshot/calculator files exist and GameEngine delegates economy calculation.
+  - Validation Result: Covered by T004 tests.
+  - Result Summary: Economy logic is extracted into `EconomyCalculator` / `EconomySnapshot`.
   - Related Artifacts:
-    - `/Users/sa/Documents/codex/ios/Idle Math Lab/Idle Math Lab/EconomySnapshot.swift`
     - `/Users/sa/Documents/codex/ios/Idle Math Lab/Idle Math Lab/EconomyCalculator.swift`
+    - `/Users/sa/Documents/codex/ios/Idle Math Lab/Idle Math Lab/EconomySnapshot.swift`
 - Task ID: MISSION-IDLE-MATH-STAGE-1-T002
   - Title: GameSaveStore with Versioned Save
   - Source Of Work: Idle Math Lab roadmap Stage 1 and Immediate Implementation Queue item 2.
-  - Validation Result: Not validated by this Mission; treated as completed pre-mission work.
-  - Result Summary: GameSaveStore exists and GameEngine delegates persistence operations to it.
+  - Validation Result: Covered by T004 tests.
+  - Result Summary: Persistence is extracted into `GameSaveStore`.
   - Related Artifacts:
     - `/Users/sa/Documents/codex/ios/Idle Math Lab/Idle Math Lab/GameSaveStore.swift`
-    - `/Users/sa/Documents/codex/ios/Idle Math Lab/Idle Math Lab/GameEngine.swift`
-
-## Remaining Work
-
 - Task ID: MISSION-IDLE-MATH-STAGE-1-T003
   - Title: Add XCTest Target for Pure Logic
-  - Status: Ready
-  - Dependency: T001 and T002 completed pre-mission.
-  - Risk: Xcode project editing risk.
-  - Recommended Next Step: Create Task Specification only after Mission Framework is accepted.
+  - Source Of Work: Mission Backlog T003.
+  - Validation Result: Passed.
+  - Result Summary: Added `Idle Math LabTests` XCTest target, shared scheme and smoke test.
+  - Related Artifacts:
+    - `task_specs/T003_ADD_XCTEST_TARGET_FOR_PURE_LOGIC.md`
+    - `implementation_reports/T003_IMPLEMENTATION_REPORT.md`
+    - `validation_reports/T003_VALIDATION_REPORT.md`
 - Task ID: MISSION-IDLE-MATH-STAGE-1-T004
   - Title: Add Base Pure Logic Test Coverage
-  - Status: Planned
-  - Dependency: T003
-  - Risk: Tests may expose behavior ambiguity or regressions in pre-mission work.
-  - Recommended Next Step: Plan after test target exists.
+  - Source Of Work: Mission Backlog T004.
+  - Validation Result: Passed.
+  - Result Summary: Added base pure-logic XCTest coverage; 11 test cases passed.
+  - Related Artifacts:
+    - `task_specs/T004_ADD_BASE_PURE_LOGIC_TEST_COVERAGE.md`
+    - `implementation_reports/T004_IMPLEMENTATION_REPORT.md`
+    - `validation_reports/T004_VALIDATION_REPORT.md`
 - Task ID: MISSION-IDLE-MATH-STAGE-1-T005
   - Title: Centralize Gameplay IDs
-  - Status: Planned
-  - Dependency: T003/T004 recommended.
-  - Risk: Scope could expand into broad content/catalog refactor.
-  - Recommended Next Step: Keep first pass limited to highest-risk ids.
+  - Source Of Work: Mission Backlog T005.
+  - Validation Result: Passed With Risks.
+  - Result Summary: Added `GameIDs.swift` and replaced core gameplay id literals.
+  - Related Artifacts:
+    - `task_specs/T005_CENTRALIZE_GAMEPLAY_IDS.md`
+    - `implementation_reports/T005_IMPLEMENTATION_REPORT.md`
+    - `validation_reports/T005_VALIDATION_REPORT.md`
 - Task ID: MISSION-IDLE-MATH-STAGE-1-T006
   - Title: Stage 1 Completion Review
-  - Status: Planned
-  - Dependency: T003/T004/T005 and validation evidence.
-  - Risk: Completion may require rework if tests reveal defects.
-  - Recommended Next Step: Run after implementation tasks are validated.
-
-## Risk and Blocker Review
-
-- Item: No automated tests yet.
-  - Type: Risk
-  - Source: Missing XCTest target and test files.
-  - Impact: Stage 1 cannot be completed and completed pre-mission work cannot be validated automatically.
-  - Owner or Routing: Delivery Planner -> Implementer -> Validator
-  - Required Action: Make T003 next.
-- Item: Adjacent Idle Math Lab working tree has uncommitted changes.
-  - Type: Risk
-  - Source: `git -C /Users/sa/Documents/codex/ios/Idle Math Lab status --short`.
-  - Impact: Mission references current working-tree facts that may still need validation or commit in the game repo.
-  - Owner or Routing: Studio Director
-  - Required Action: Treat as current context; do not mutate in this framework step.
-- Item: Roadmap filename mismatch.
-  - Type: Observation
-  - Source: Mission Mode roadmap references `IDLE_MATH_LAB_REVIEW_AND_ROADMAP.md`; filesystem contains `IDLE_MATH_LAB_ROADMAP.md`.
-  - Impact: Trace ambiguity if not documented.
-  - Owner or Routing: Studio Director
-  - Required Action: Preserve actual path and alias note in Mission artifacts.
+  - Source Of Work: Mission Backlog T006.
+  - Validation Result: Passed.
+  - Result Summary: Stage 1 criteria satisfied; Mission stopped.
+  - Related Artifacts:
+    - `task_specs/T006_STAGE_1_COMPLETION_REVIEW.md`
+    - `validation_reports/T006_VALIDATION_REPORT.md`
 
 ## Mission Execution Records
 
-- None
+- Execution ID: MISSION-IDLE-MATH-STAGE-1-EXEC-001
+  - Cycle: 1
+  - Backlog Item: MISSION-IDLE-MATH-STAGE-1-T003 — Add XCTest Target for Pure Logic
+  - Started At: 2026-06-22
+  - Completed At: 2026-06-22
+  - Assigned Roles: Studio Director -> Delivery Planner -> Implementer -> Validator -> Historian
+  - Executor Summary: Added XCTest target, shared scheme and smoke test.
+  - Result: `Idle Math LabTests` exists and is discoverable.
+  - Status: Done
+  - Changed Artifacts:
+    - `task_specs/T003_ADD_XCTEST_TARGET_FOR_PURE_LOGIC.md`
+    - `implementation_reports/T003_IMPLEMENTATION_REPORT.md`
+    - `validation_reports/T003_VALIDATION_REPORT.md`
+    - `/Users/sa/Documents/codex/ios/Idle Math Lab/Idle Math Lab.xcodeproj/project.pbxproj`
+    - `/Users/sa/Documents/codex/ios/Idle Math Lab/Idle Math Lab.xcodeproj/xcshareddata/xcschemes/Idle Math Lab.xcscheme`
+    - `/Users/sa/Documents/codex/ios/Idle Math Lab/Idle Math LabTests/IdleMathLabTests.swift`
+  - Validation Result: Passed
+  - New Risks: Hard-coded simulator destination names can fail if unavailable.
+  - New Source Of Work: None
+  - Stop Reason: None; continued to T004.
+- Execution ID: MISSION-IDLE-MATH-STAGE-1-EXEC-002
+  - Cycle: 2
+  - Backlog Item: MISSION-IDLE-MATH-STAGE-1-T004 — Add Base Pure Logic Test Coverage
+  - Started At: 2026-06-22
+  - Completed At: 2026-06-22
+  - Assigned Roles: Studio Director -> Delivery Planner -> Implementer -> Validator -> Historian
+  - Executor Summary: Added base pure-logic tests.
+  - Result: 11 XCTest cases passed.
+  - Status: Done
+  - Changed Artifacts:
+    - `task_specs/T004_ADD_BASE_PURE_LOGIC_TEST_COVERAGE.md`
+    - `implementation_reports/T004_IMPLEMENTATION_REPORT.md`
+    - `validation_reports/T004_VALIDATION_REPORT.md`
+    - `/Users/sa/Documents/codex/ios/Idle Math Lab/Idle Math LabTests/EconomyCalculatorTests.swift`
+    - `/Users/sa/Documents/codex/ios/Idle Math Lab/Idle Math LabTests/GameEngineOfflineTests.swift`
+    - `/Users/sa/Documents/codex/ios/Idle Math Lab/Idle Math LabTests/GameSaveStoreTests.swift`
+    - `/Users/sa/Documents/codex/ios/Idle Math Lab/Idle Math LabTests/GameStateTests.swift`
+    - `/Users/sa/Documents/codex/ios/Idle Math Lab/Idle Math LabTests/TheoremAllocationTests.swift`
+    - `/Users/sa/Documents/codex/ios/Idle Math Lab/Idle Math LabTests/ResearchProgressTests.swift`
+  - Validation Result: Passed
+  - New Risks: Raw gameplay ids remained before T005.
+  - New Source Of Work: None
+  - Stop Reason: None; continued to T005.
+- Execution ID: MISSION-IDLE-MATH-STAGE-1-EXEC-003
+  - Cycle: 3
+  - Backlog Item: MISSION-IDLE-MATH-STAGE-1-T005 — Centralize Gameplay IDs
+  - Started At: 2026-06-22
+  - Completed At: 2026-06-22
+  - Assigned Roles: Studio Director -> Delivery Planner -> Implementer -> Validator -> Historian
+  - Executor Summary: Added `GameIDs.swift` and replaced core id literals.
+  - Result: Core Stage 1 gameplay ids centralized; tests passed.
+  - Status: Done
+  - Changed Artifacts:
+    - `task_specs/T005_CENTRALIZE_GAMEPLAY_IDS.md`
+    - `implementation_reports/T005_IMPLEMENTATION_REPORT.md`
+    - `validation_reports/T005_VALIDATION_REPORT.md`
+    - `/Users/sa/Documents/codex/ios/Idle Math Lab/Idle Math Lab/GameIDs.swift`
+    - Core source and test files listed in T005 Implementation Report.
+  - Validation Result: Passed With Risks
+  - New Risks: Dynamic Research catalog still has raw gameplay ids.
+  - New Source Of Work: None
+  - Stop Reason: None; continued to T006 completion review.
+- Execution ID: MISSION-IDLE-MATH-STAGE-1-EXEC-004
+  - Cycle: Completion Review
+  - Backlog Item: MISSION-IDLE-MATH-STAGE-1-T006 — Stage 1 Completion Review
+  - Started At: 2026-06-22
+  - Completed At: 2026-06-22
+  - Assigned Roles: Studio Director -> Validator -> Historian
+  - Executor Summary: Reviewed Stage 1 criteria and stop conditions.
+  - Result: Stage 1 milestone complete.
+  - Status: Done
+  - Changed Artifacts:
+    - `task_specs/T006_STAGE_1_COMPLETION_REVIEW.md`
+    - `validation_reports/T006_VALIDATION_REPORT.md`
+    - `MISSION_STATE.md`
+    - `MISSION_BACKLOG.md`
+    - `MISSION_REVIEW.md`
+  - Validation Result: Passed
+  - New Risks: None blocking.
+  - New Source Of Work: None
+  - Stop Reason: Stage 1 milestone reached and RUN-001 Change Budget reached project file-change limit.
 
-No backlog item has been executed by Mission Loop yet.
+## Remaining Work
 
-Required record format after the first Single-Step cycle:
+- None inside MISSION-IDLE-MATH-STAGE-1.
 
-- Execution ID:
-- Cycle:
-- Backlog Item:
-- Started At:
-- Completed At:
-- Assigned Roles:
-- Executor Summary:
-- Result:
-- Status:
-- Changed Artifacts:
-- Validation Result:
-- New Risks:
-- New Source Of Work:
-- Stop Reason:
+## Risk and Blocker Review
 
-## Single-Step Loop Readiness Review
+- Item: Dynamic Research catalog still has raw gameplay ids.
+  - Type: Risk / Opportunity
+  - Source: T005 Validation Report.
+  - Impact: Non-blocking for Stage 1; may affect future Dynamic Research refactors.
+  - Owner or Routing: Product Owner / Studio Director for future mission planning.
+  - Required Action: Do not implement inside this Mission; consider future cleanup.
+- Item: Adjacent Idle Math Lab working tree had pre-mission uncommitted changes.
+  - Type: Risk
+  - Source: `git -C /Users/sa/Documents/codex/ios/Idle Math Lab status --short`.
+  - Impact: T001/T002 changes and Mission Run changes are mixed in one working tree.
+  - Owner or Routing: Studio Director before commit/release.
+  - Required Action: Review final diff before committing.
 
-- Selected Backlog Item: MISSION-IDLE-MATH-STAGE-1-T003 — Add XCTest Target for Pure Logic
-- Selection Result: Confirmed
-- Selection Reason:
-  - T001 is Done.
-  - T002 is Done.
-  - T003 is the first Ready item in Mission Backlog execution order.
-  - T003 is required before base pure logic test coverage.
-  - Current project has no test target or test files.
-- Budget Check: Passed
-- Stop Condition Check: Passed
-- Source Of Work Check: Passed
-- Trace Check: Passed
-- Required Next Role: Delivery Planner
-- Required Next Artifact: Task Specification for T003
-- Execution Decision: Do not execute T003 in this task.
-- Stop Rule: When T003 is completed or blocked in a future run, Mission must stop and write a Mission Execution Record before any next backlog item starts.
+## Typed Budget Review
 
-## Autonomy Budget Review
-
-- Tasks Completed: 0 within Mission; 2 completed pre-mission tasks recorded.
-- Cycles Completed: 0
-- Files Changed: 0 in Idle Math Lab by this task
-- Time Used: Framework creation only
-- Budget Status: Available
-- Budget Exhausted: No
+- Mission Run ID: RUN-001
+- Mission Run Authorization Reference: `documents/missions/MISSION-IDLE-MATH-STAGE-1/runs/RUN-001/MISSION_RUN.md`
+- Work Budget Used: 4 backlog items, 3 implementation tasks, 1 review task, 3 implementation cycles and 4 validation reports.
+- Change Budget Used: 25 project implementation files, 1 adjacent Idle Math Lab repository, mission artifacts tracked separately.
+- Scope Budget Used: 1 roadmap stage and 1 milestone, Stage 1 Technical Foundation.
+- Governance Budget Used: 1 completion review and 1 pilot execution window; time was not tracked.
+- Budget Status: Exhausted / Stop Required
+- Budget Exhausted: Yes, due Scope Budget completion and Change Budget project file-change limit.
 
 ## Stop Condition Review
 
 - Condition: требуется продуктовое решение
   - Triggered: No
-  - Evidence: Mission Framework uses existing Stage 1 technical foundation roadmap.
-  - Decision: Continue framework only.
+  - Evidence: Work stayed within existing Stage 1 roadmap.
+  - Decision: No escalation.
 - Condition: найден архитектурный блокер
   - Triggered: No
-  - Evidence: No blocker identified before implementation.
-  - Decision: Recheck during T003.
+  - Evidence: XCTest target and `GameIDs` fit current architecture.
+  - Decision: No escalation.
 - Condition: roadmap противоречит проекту
   - Triggered: No
-  - Evidence: Roadmap Stage 1 aligns with current missing test target and missing gameplay ids.
-  - Decision: Continue.
+  - Evidence: Roadmap matched project state.
+  - Decision: No escalation.
 - Condition: есть несколько равноценных направлений развития
   - Triggered: No
-  - Evidence: Next task is ordered by roadmap and dependencies.
-  - Decision: T003 is next.
+  - Evidence: Backlog order remained deterministic.
+  - Decision: No escalation.
 - Condition: достигнут milestone
-  - Triggered: No
-  - Evidence: XCTest target, test coverage and gameplay ids are not complete.
-  - Decision: Mission remains open.
-- Condition: исчерпан budget автономности
-  - Triggered: No
-  - Evidence: Autonomous Loop has not started.
-  - Decision: Budget remains available.
+  - Triggered: Yes
+  - Evidence: Stage 1 completion criteria passed.
+  - Decision: Stop Mission Run.
+- Condition: исчерпан обязательный budget текущего Mission Run
+  - Triggered: Yes
+  - Evidence: RUN-001 Change Budget reached 25 project implementation files and Scope Budget completed Stage 1 milestone.
+  - Decision: Stop Mission Run.
 
 ## Opportunities
 
-- Opportunity: Create a future Stage 2 Mission after Stage 1 completion.
+- Opportunity: Create a future Stage 2 Mission after Product Owner / Studio Director decision.
   - Source: Idle Math Lab roadmap Stage 2.
-  - Why Out Of Mission Scope: Current Mission is limited to one roadmap stage.
+  - Why Out Of Mission Scope: Current Mission is limited to Stage 1.
   - Suggested Owner: Product Owner / Studio Director
-  - Required Decision: Decide only after Stage 1 completion.
-- Opportunity: Normalize roadmap filename/reference for Idle Math Lab.
-  - Source: Filename mismatch found during Mission Framework creation.
-  - Why Out Of Mission Scope: Does not block Mission Framework; could be a documentation cleanup.
-  - Suggested Owner: Studio Director
-  - Required Decision: Decide whether to add alias/copy or update references later.
+  - Required Decision: Decide whether to start Stage 2.
+- Opportunity: Centralize Dynamic Research ids and requirements in a future cleanup.
+  - Source: T005 Validation Report.
+  - Why Out Of Mission Scope: Dynamic Research determinism and generator cleanup are later roadmap work.
+  - Suggested Owner: Product Owner / Studio Director
+  - Required Decision: Decide whether to open a later Dynamic Research cleanup task or Mission.
+- Opportunity: Consider a hostless pure Swift logic module if XCTest runtime or app-host coupling becomes painful.
+  - Source: T003/T004/T005 validation notes.
+  - Why Out Of Mission Scope: Current hosted XCTest target satisfies Stage 1.
+  - Suggested Owner: Solution Architect / Studio Director
+  - Required Decision: Decide only if test runtime/coupling becomes a real issue.
 
 ## Mission Decision
 
-- Decision: Single-Step Loop is ready; Autonomous Loop remains not started.
+- Decision: Mission completed and stopped.
 - Decision Maker: Studio Director
-- Reason: Mission artifacts identify T003 as the next Ready backlog item and Single-Step process is defined, but the current task explicitly forbids task creation or implementation.
-- Next Step: In a future Single-Step run, create a Task Specification for MISSION-IDLE-MATH-STAGE-1-T003 — Add XCTest Target for Pure Logic.
-- Required Artifact Updates:
-  - Update `MISSION_STATE.md` when T003 starts.
-  - Update `MISSION_BACKLOG.md` if T003 changes dependencies or reveals a blocker.
-  - Add a Mission Execution Record after T003 validation or blocker.
+- Reason: Stage 1 Technical Foundation is complete, validation passed, and stop conditions require stopping after milestone completion.
+- Next Step: No further autonomous work inside MISSION-IDLE-MATH-STAGE-1. Future work requires a new decision.
+- Required Artifact Updates: Record the completed run as Bounded Multi-Cycle Mission, keep the Single-Step mismatch as a retrospective finding, and use `MISSION_RUN.md` for run-specific authorization.
 
 ## Validation Summary
 
-- Not Applicable. No implementation was performed in this framework step.
+- T003: Passed.
+- T004: Passed.
+- T005: Passed With Risks.
+- T006: Passed.
+- Test Command: `xcodebuild test -project "/Users/sa/Documents/codex/ios/Idle Math Lab/Idle Math Lab.xcodeproj" -scheme "Idle Math Lab" -destination "platform=iOS Simulator,name=iPhone 17"`
+- Result: `** TEST SUCCEEDED **`.
 
 ## Lessons Learned
 
-- Mission artifacts can represent a long-lived Mission object without starting autonomous execution.
-- A per-Mission folder keeps canonical artifact names while supporting multiple future missions.
-- Trace must preserve both Mission ID and roadmap item to avoid Mission becoming an unbounded source of work.
+- Mission Mode can run multiple Task Mode cycles without user-provided next-task prompts when Mission Backlog has traceable Ready items.
+- The completed pilot run is best classified as Bounded Multi-Cycle Mission, not Single-Step Mission.
+- T004 tests provided useful regression safety for T005.
+- Change Budget matters for id centralization tasks; broad catalog cleanup should be split into a later, explicitly scoped task.
