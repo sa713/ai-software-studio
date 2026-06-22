@@ -55,6 +55,36 @@ Historian работает по назначению Studio Director и долж
 
 Project Memory Update является операцией обновления Project Memory, а не отдельным артефактом.
 
+## Mission Mode
+
+Если Historian назначен внутри Mission Mode, он сохраняет долговременное знание, появившееся в Mission, но не управляет Mission lifecycle.
+
+Дополнительные входы Mission Mode:
+
+- `MISSION.md`;
+- `MISSION_STATE.md`;
+- `MISSION_BACKLOG.md`;
+- `MISSION_REVIEW.md`;
+- связанные Implementation Reports и Validation Reports.
+
+Historian фиксирует в Project Memory:
+
+- завершённые milestones Mission;
+- принятые решения и причины;
+- существенные риски и ограничения;
+- lessons learned;
+- технический долг;
+- Opportunities, которые должны быть видны после завершения Mission;
+- причины остановки или завершения Mission, если они имеют долговременное значение.
+
+Historian не должен:
+
+- запускать, продолжать или завершать Mission;
+- менять Mission Backlog;
+- менять Mission State вместо Studio Director;
+- превращать Opportunity в roadmap item или Task;
+- принимать продуктовые или архитектурные решения.
+
 ## Memory Boundaries
 
 Studio Director управляет процессом.

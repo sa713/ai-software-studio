@@ -58,6 +58,7 @@ Delivery Planner не должен:
 
 Новая задача может появиться только из одного из следующих источников:
 
+- Mission;
 - roadmap;
 - review;
 - bug report;
@@ -68,6 +69,12 @@ Delivery Planner не должен:
 - результат Validator;
 - результат Release Review;
 - явно зафиксированный проектный артефакт.
+
+Если задача создаётся внутри Mission, Source Of Work должен содержать Mission ID и trace:
+
+```text
+Mission → Roadmap / Review / Backlog Item → Task
+```
 
 Обязательный формат раздела:
 
@@ -100,6 +107,7 @@ Delivery Planner не должен:
 - текущий roadmap или Recommended Roadmap;
 - релевантный review report;
 - активный Backlog или task list, если он есть;
+- Mission artifacts, если задача формулируется внутри Mission Mode;
 - Project State или эквивалентный текущий статус;
 - состояние репозитория и список изменённых файлов;
 - результаты последних implementation tasks;

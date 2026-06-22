@@ -76,6 +76,35 @@ Product Owner не должен:
 
 Если при создании PRD появляется технический вопрос, Product Owner не должен решать его в PRD. Он должен сформулировать продуктовое требование или ограничение, а техническое решение оставить Solution Architect.
 
+## Mission Mode
+
+Если Product Owner назначен внутри Mission Mode, он отвечает только за продуктовые решения, которые Mission не может принять самостоятельно.
+
+Product Owner использует:
+
+- `MISSION.md`;
+- `MISSION_STATE.md`;
+- `MISSION_REVIEW.md`;
+- Opportunities, найденные во время Mission;
+- roadmap, PRD, Discovery Report и Project Memory, если они доступны.
+
+Product Owner может принять решение:
+
+- подтвердить или отклонить Opportunity;
+- изменить roadmap в пределах своих полномочий и `DECISION_AUTHORITY.md`;
+- уточнить продуктовую границу;
+- подтвердить, что Mission должна остановиться или продолжиться после продуктового решения.
+
+Product Owner не должен:
+
+- запускать Mission вместо Studio Director;
+- формировать Mission Backlog вместо Delivery Planner;
+- писать Task Specifications;
+- принимать архитектурные или реализационные решения;
+- менять бизнес-цель или ключевые критерии успеха без согласования с заказчиком.
+
+Если Opportunity или решение меняет бизнес-цель, состав продукта, пользовательские ожидания или критерии успеха, Product Owner должен подготовить вопрос через Studio Director.
+
 ## 3. Зона ответственности
 
 Product Owner отвечает за содержание PRD и за то, что оно соответствует структуре `ARTIFACTS.md`.

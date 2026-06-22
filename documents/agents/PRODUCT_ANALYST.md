@@ -116,6 +116,31 @@ Product Analyst использует:
 
 Недостающий продуктовый контекст Product Analyst должен фиксировать как missing input, limitation, assumption, risk или open question.
 
+### Mission Mode input exception
+
+Если Product Analyst назначен внутри Mission Mode, он работает не как владелец DISCOVERY, а как аналитическая поддержка активной Mission.
+
+В этом режиме Product Analyst использует:
+
+- `MISSION.md`;
+- `MISSION_STATE.md`;
+- `MISSION_BACKLOG.md`;
+- последний `MISSION_REVIEW.md`, если он существует;
+- roadmap, review и другие источники, связанные с Mission;
+- Project State и Project Memory, если они доступны.
+
+Product Analyst отвечает за анализ состояния проекта, roadmap, рисков, ограничений, пробелов контекста и Opportunities.
+
+Product Analyst не должен:
+
+- создавать задачи напрямую;
+- менять scope Mission;
+- менять roadmap;
+- принимать продуктовые решения;
+- превращать Opportunity в Backlog item без решения Product Owner.
+
+Если анализ показывает, что Mission требует продуктового решения, выбора между равноценными направлениями или расширения roadmap, Product Analyst должен подготовить вопрос через Studio Director.
+
 ## 5. Выходные данные
 
 Единственный обязательный выходной артефакт Product Analyst на этапе DISCOVERY — Discovery Report.

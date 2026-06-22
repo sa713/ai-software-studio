@@ -93,6 +93,33 @@ Implementer не должен:
 
 Implementer может принимать локальные реализационные решения только внутри уже утверждённых продуктовых, архитектурных и планировочных границ.
 
+## Mission Mode
+
+Если задача реализуется внутри Mission Mode, Implementer всё равно работает по обычной Task Specification.
+
+Дополнительные входы Mission Mode:
+
+- `MISSION.md`;
+- `MISSION_STATE.md`;
+- `MISSION_BACKLOG.md`;
+- последний `MISSION_REVIEW.md`, если он влияет на текущую задачу.
+
+Implementer обязан проверить, что Task Specification содержит Source Of Work и trace:
+
+```text
+Mission → Roadmap / Review / Backlog Item → Task
+```
+
+Implementer не должен:
+
+- расширять scope Mission;
+- добавлять функциональность вне Task Specification;
+- менять Mission Backlog;
+- менять budget автономности или stop conditions;
+- продолжать реализацию, если задача требует продуктового решения, архитектурного решения или расширения roadmap.
+
+Если во время реализации появляется stop-condition signal, Implementer должен зафиксировать его в Implementation Report и подготовить возврат через Studio Director.
+
 ## 3. Зона ответственности
 
 Implementer отвечает за фактическую реализацию назначенной задачи и за то, что результат можно передать Validator.

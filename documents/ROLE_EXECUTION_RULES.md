@@ -338,6 +338,46 @@ Project State не заменяет PRD, Architecture Document, Backlog, Validat
 
 ---
 
+## Работа в Mission Mode
+
+Mission Mode является надстройкой над Task Mode.
+
+Если роль назначена внутри активной Mission, агент обязан:
+
+1. Прочитать `MISSION.md`, `MISSION_STATE.md`, `MISSION_BACKLOG.md` и последний `MISSION_REVIEW.md`, если он уже существует.
+2. Определить, какая обычная роль и какой обычный этап Task Mode применимы к текущей задаче.
+3. Проверить, что задача имеет Source Of Work и trace до Mission и исходного roadmap, review, Backlog item или другого подтверждённого источника.
+4. Проверить, что действие находится внутри scope boundaries Mission.
+5. Проверить, что действие не нарушает бюджет автономности и stop conditions.
+
+Mission не является Task. Mission не заменяет Task Specification, Backlog, Implementation Report или Validation Report.
+
+Каждая задача внутри Mission должна сохранять trace:
+
+```text
+Mission → Roadmap / Review / Backlog Item → Task
+```
+
+Если trace отсутствует, задача считается некорректной и не должна передаваться в Implementation.
+
+Если во время работы обнаружена новая идея, она фиксируется как Opportunity. Opportunity не расширяет Mission автоматически и требует решения Product Owner, если должна стать roadmap item, Backlog item, Task или новой Mission.
+
+В Single-Step Autonomous Mission Loop один запуск Mission ограничен одной backlog item.
+
+После завершения назначенной backlog item любая роль должна остановиться и передать результат Studio Director для обновления Mission State и Mission Review. Роль не должна самостоятельно выбирать или начинать следующую backlog item.
+
+Агент обязан остановить работу внутри Mission и подготовить возврат или эскалацию через Studio Director, если:
+
+- требуется продуктовое решение;
+- найден архитектурный блокер;
+- roadmap противоречит проекту;
+- есть несколько равноценных направлений развития;
+- достигнут milestone;
+- исчерпан бюджет автономности;
+- задача требует расширения roadmap, изменения vision, добавления крупной функции вне roadmap или изменения продуктовой стратегии.
+
+---
+
 ## Работа с Project Memory
 
 Project Memory является долговременной памятью проекта.
@@ -377,6 +417,18 @@ Idea
 → Release
 ```
 
+Для Mission Mode минимальная цепочка трассируемости задачи:
+
+```text
+Mission
+→ Roadmap / Review / Backlog Item
+→ Source Of Work
+→ Task
+→ Implementation
+→ Validation
+→ Mission Review
+```
+
 Агент обязан сохранять трассируемость на своём участке цепочки:
 
 - Idea Brief должен ссылаться на исходный ввод заказчика;
@@ -389,6 +441,7 @@ Idea
 - Validation Report должен связывать проверки с Task Specification, PRD, Architecture Document, Implementation Report, кодом и тестами;
 - Release Package должен связывать элементы релиза с Validation Report, Implementation Reports, Backlog, PRD и Architecture Document;
 - Project Memory должен ссылаться на источники решений, причин, долгов, уроков и ограничений.
+- Mission Review должен связывать результаты Mission cycle с Mission Definition, Mission State, Mission Backlog, Task Specifications, Implementation Reports и Validation Reports.
 
 Если связь с источником отсутствует, агент обязан зафиксировать это как проблему, ограничение, риск, возврат или эскалацию в зависимости от влияния.
 

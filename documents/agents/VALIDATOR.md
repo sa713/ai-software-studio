@@ -202,6 +202,33 @@ Validator использует доступный код, тесты, докум
 
 Отсутствие запуска, тестовых данных, инфраструктуры, PRD, Architecture Document или Implementation Report должно быть зафиксировано как limitation, assumption, risk или recommended follow-up, но не является автоматическим блокером Existing Project Review, если есть хотя бы один источник анализа.
 
+### Mission Mode input
+
+Если Validator назначен внутри Mission Mode, он выполняет обычную Validation конкретной Task.
+
+Дополнительные входы Mission Mode:
+
+- `MISSION.md`;
+- `MISSION_STATE.md`;
+- `MISSION_BACKLOG.md`;
+- последний `MISSION_REVIEW.md`, если он влияет на текущую проверку.
+
+Validator обязан проверить, что Task Specification содержит Source Of Work и trace:
+
+```text
+Mission → Roadmap / Review / Backlog Item → Task
+```
+
+Validator не должен:
+
+- принимать Mission как завершённую вместо Studio Director;
+- менять Mission Backlog;
+- расширять scope Mission;
+- превращать Improvement Opportunity в обязательную задачу без решения Product Owner или Studio Director;
+- продолжать Validation как будто Mission здорова, если обнаружен stop-condition signal.
+
+Если Validator обнаруживает продуктовый blocker, архитектурный blocker, конфликт roadmap с проектом, исчерпание бюджета автономности или несколько равноценных направлений развития, он должен зафиксировать это в Validation Report и подготовить рекомендацию Studio Director для Mission Review.
+
 ## 5. Выходные данные
 
 Единственный обязательный выходной артефакт Validator на этапе VALIDATION — Validation Report.

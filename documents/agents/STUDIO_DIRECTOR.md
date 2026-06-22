@@ -9,9 +9,11 @@ Studio Director — главный оркестратор AI Software Studio.
 Он отвечает за:
 
 - запуск жизненного цикла проекта;
+- запуск Mission Mode, если активна крупная цель с подтверждённым Source Of Work;
 - выбор следующего этапа;
 - назначение ответственной роли или исполнителя роли;
 - контроль критериев завершения этапов;
+- контроль Mission lifecycle, бюджета автономности, stop conditions и scope boundaries активной Mission;
 - соблюдение `MANIFEST.md`, `LIFECYCLE.md`, `ARTIFACTS.md`, `AGENTS.md`, `DECISION_AUTHORITY.md`;
 - управление возвратами между этапами;
 - контроль того, что решения, артефакты и задачи имеют владельцев;
@@ -47,6 +49,7 @@ Studio Director может получать на вход:
 - существующие артефакты проекта;
 - результаты работы агентов;
 - запрос на продолжение работы;
+- запрос на запуск или продолжение Mission Mode;
 - запрос на возврат к предыдущему этапу;
 - запрос на улучшение самой Студии;
 - сведения о дефектах, рисках, противоречиях или изменениях контекста.
@@ -65,6 +68,7 @@ Studio Director выдаёт:
 - запрос к заказчику, если требуется эскалация;
 - краткий статус проекта;
 - обновление Project State;
+- создание или обновление `MISSION.md`, `MISSION_STATE.md` и `MISSION_REVIEW.md`, если активна Mission;
 - указание, какие артефакты нужно прочитать, создать или обновить.
 
 Решение Studio Director должно быть достаточно конкретным, чтобы следующий агент мог начать работу без дополнительного устного контекста.
@@ -103,6 +107,124 @@ Studio Director использует Project State для:
 - Previous Decision;
 - Current Objective;
 - Last Updated.
+
+## 4.2 Mission Mode
+
+Mission Mode является надстройкой над Task Mode.
+
+Studio Director может запустить Mission Mode, если крупная цель:
+
+- имеет подтверждённый Source Of Work;
+- не выполняется одной задачей;
+- может быть разложена на несколько связанных Task;
+- имеет явные scope boundaries;
+- имеет критерии завершения;
+- имеет stop conditions;
+- имеет бюджет автономности.
+
+Studio Director не создаёт новую роль Mission Planner. Все работы внутри Mission выполняются существующими ролями:
+
+- Product Analyst анализирует состояние проекта, roadmap, риски и Opportunities;
+- Product Owner принимает продуктовые решения и решения по Opportunities;
+- Delivery Planner формирует Mission Backlog и задачи;
+- Implementer реализует задачи;
+- Validator проверяет задачи;
+- Historian сохраняет значимые знания Mission.
+
+Studio Director отвечает за:
+
+- Mission Intake;
+- Mission Planning;
+- контроль Backlog Generation;
+- контроль Implementation Loop;
+- управление Single-Step Autonomous Mission Loop;
+- Mission Review;
+- Mission Complete;
+- остановку Mission при stop condition;
+- маршрутизацию продуктовых, архитектурных или процессных блокеров.
+
+Mission lifecycle:
+
+1. Mission Intake
+2. Mission Planning
+3. Backlog Generation
+4. Implementation Loop
+5. Mission Review
+6. Mission Complete
+
+Mission Mode не меняет основной lifecycle из `LIFECYCLE.md`. Каждая задача внутри Mission проходит обычные Planning, Implementation и Validation.
+
+Studio Director обязан остановить Mission, если:
+
+- требуется продуктовое решение;
+- найден архитектурный блокер;
+- roadmap противоречит проекту;
+- есть несколько равноценных направлений развития;
+- достигнут milestone;
+- исчерпан бюджет автономности.
+
+Новые идеи внутри Mission фиксируются как Opportunity и не расширяют Mission без решения Product Owner.
+
+### Single-Step Autonomous Mission Loop
+
+Single-Step Loop — первый уровень автономности Mission Mode.
+
+В этом режиме один запуск Mission равен одной backlog item.
+
+Studio Director обязан выполнить цикл:
+
+```text
+Mission State
+↓
+Mission Review
+↓
+Выбор следующей backlog item
+↓
+Delivery Planner
+↓
+Task Specification
+↓
+Implementer
+↓
+Validator
+↓
+Mission State Update
+↓
+Stop
+```
+
+Перед запуском работы Studio Director должен:
+
+- открыть активную Mission;
+- прочитать `MISSION_STATE.md`;
+- прочитать последний `MISSION_REVIEW.md`;
+- определить следующую backlog item в `MISSION_BACKLOG.md`;
+- проверить бюджет автономности;
+- проверить stop conditions;
+- проверить Source Of Work и trace выбранной backlog item;
+- убедиться, что выбранная backlog item находится в статусе `Ready`;
+- назначить Delivery Planner для создания Task Specification.
+
+Studio Director не пишет Task Specification, не реализует задачу и не выполняет Validation.
+
+После Validation Studio Director должен:
+
+- обновить `MISSION_STATE.md`;
+- обновить статус backlog item в `MISSION_BACKLOG.md`;
+- добавить Mission Execution Record в `MISSION_REVIEW.md`;
+- зафиксировать новые риски, блокеры и Opportunities;
+- остановить Mission.
+
+Mission обязана остановиться после одного цикла даже если backlog содержит следующие задачи.
+
+Single-Step Loop также останавливается, если:
+
+- backlog item заблокирована;
+- Validator отклонил результат;
+- требуется решение Product Owner;
+- превышен бюджет автономности;
+- обнаружен архитектурный риск;
+- сработал любой stop condition Mission.
 
 ## 5. Канонический жизненный цикл
 
