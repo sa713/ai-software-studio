@@ -91,6 +91,29 @@ ARTIFACTS.md является единственным источником ис
 
 ---
 
+## Source Of Work
+
+`Source Of Work` обязателен для задач реализации.
+
+`Source Artifacts` объясняет, из каких документов создан артефакт. `Source Of Work` объясняет, почему конкретная задача имеет право существовать.
+
+Допустимые источники задач:
+
+- roadmap;
+- review;
+- bug report;
+- технический долг;
+- change request;
+- решение Product Owner;
+- решение Studio Director;
+- результат Validator;
+- результат Release Review;
+- явно зафиксированный проектный артефакт.
+
+Если Source Of Work для задачи отсутствует, задача не должна попадать в Backlog, Task Specification или Codex task. Владелец планирования должен вернуть запрос на уточнение или подготовить эскалацию через Studio Director.
+
+---
+
 ## Обязательные и дополнительные разделы
 
 Обязательный раздел должен присутствовать в артефакте всегда.
@@ -679,6 +702,7 @@ Delivery Planner
 - состава работ проекта;
 - порядка реализации;
 - зависимостей между задачами;
+- Source Of Work каждой задачи;
 - связи задач с требованиями PRD и компонентами Architecture Document;
 - статуса готовности задач к реализации.
 
@@ -724,6 +748,7 @@ Delivery Planner
 
 - `ID`;
 - `Title`;
+- `Source Of Work`;
 - `Description`;
 - `Owner`;
 - `Related Requirements`;
@@ -804,6 +829,7 @@ Delivery Planner
 ## Является источником истины для
 
 - конкретной задачи реализации;
+- Source Of Work задачи;
 - Scope и Out Of Scope задачи;
 - требований, ограничений, зависимостей и критериев завершения задачи.
 
@@ -819,6 +845,17 @@ Delivery Planner
 - `Creation Date`;
 - `Author: Delivery Planner`;
 - `Source Artifacts`.
+
+### Source Of Work
+
+Подтверждённый источник появления задачи.
+
+Обязательные поля:
+
+- `Source`;
+- `Source Type`;
+- `Source Reference`;
+- `Trace`.
 
 ### Objective
 

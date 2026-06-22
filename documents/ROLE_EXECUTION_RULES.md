@@ -369,6 +369,7 @@ Idea
 → Discovery
 → PRD
 → Architecture
+→ Source Of Work
 → Backlog
 → Task
 → Implementation
@@ -382,8 +383,8 @@ Idea
 - Discovery Report должен ссылаться на Idea Brief и источники Discovery;
 - PRD должен ссылаться на Discovery Report и Idea Brief;
 - Architecture Document должен ссылаться на PRD и применимые источники контекста;
-- Backlog должен связывать задачи с PRD и Architecture Document;
-- Task Specification должен связывать задачу с Backlog, требованиями и компонентами;
+- Backlog должен связывать задачи с Source Of Work, PRD и Architecture Document;
+- Task Specification должен связывать задачу с Source Of Work, Backlog, требованиями и компонентами;
 - Implementation Report должен связывать изменения с Task Specification, требованиями и критериями приёмки;
 - Validation Report должен связывать проверки с Task Specification, PRD, Architecture Document, Implementation Report, кодом и тестами;
 - Release Package должен связывать элементы релиза с Validation Report, Implementation Reports, Backlog, PRD и Architecture Document;
