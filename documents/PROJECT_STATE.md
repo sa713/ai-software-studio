@@ -1,6 +1,6 @@
 # PROJECT_STATE.md
-v0.1
-2026-06-19
+v0.3
+2026-06-23
 
 ## Назначение
 
@@ -164,7 +164,9 @@ Project State должен содержать следующие поля.
 
 - `IDEA`
 - `DISCOVERY`
+- `UX DESIGN`
 - `PRODUCT DEFINITION`
+- `GAME DESIGN`
 - `SOLUTION DESIGN`
 - `PLANNING`
 - `IMPLEMENTATION`
@@ -204,7 +206,9 @@ Project State должен содержать следующие поля.
 
 - `Studio Director`
 - `Product Analyst`
+- `UX Designer`
 - `Product Owner`
+- `Game Designer`
 - `Solution Architect`
 - `Delivery Planner`
 - `Implementer`
@@ -511,11 +515,23 @@ Product Analyst читает Project State, чтобы понять текущи
 
 Product Analyst может предложить обновление Project State через Discovery Report или сообщение Studio Director.
 
+## UX Designer
+
+UX Designer читает Project State, чтобы понять текущий этап, активные входные артефакты, scope UX Design или UX Review, блокеры и процессное решение Studio Director.
+
+UX Designer может предложить обновление Project State через UX Requirements, UX Risks, UX Review, UX Findings или вопрос Studio Director.
+
 ## Product Owner
 
 Product Owner читает Project State, чтобы понять текущий этап, активные входные артефакты, статус эскалации и процессные ограничения.
 
 Product Owner может предложить обновление Project State через Idea Brief, PRD или вопрос Studio Director.
+
+## Game Designer
+
+Game Designer читает Project State, чтобы понять текущий этап, применимость GAME DESIGN, активные входные артефакты, scope Game Design или Game Design Review, блокеры и процессное решение Studio Director.
+
+Game Designer может предложить обновление Project State через Game Design Notes, Gameplay Risks, Gameplay Opportunities, Game Design Review, Gameplay Findings или вопрос Studio Director.
 
 ## Solution Architect
 

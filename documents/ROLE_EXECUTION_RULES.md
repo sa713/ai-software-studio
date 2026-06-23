@@ -1,6 +1,6 @@
 # ROLE_EXECUTION_RULES.md
-v0.4
-2026-06-19
+v0.6
+2026-06-23
 
 ## Назначение
 
@@ -18,7 +18,9 @@ v0.4
 
 - Studio Director;
 - Product Analyst;
+- UX Designer;
 - Product Owner;
+- Game Designer;
 - Solution Architect;
 - Delivery Planner;
 - Implementer;
@@ -145,7 +147,9 @@ v0.4
 Предположение должно быть зафиксировано в соответствующем артефакте:
 
 - Discovery-допущение — в Discovery Report;
+- UX-допущение — в UX Requirements, UX Risks или UX Review;
 - продуктовое допущение — в PRD;
+- game design допущение — в Game Design Notes, Gameplay Risks, Gameplay Opportunities или Game Design Review;
 - техническое допущение — в Architecture Document;
 - планировочное допущение — в Backlog или Task Specification;
 - реализационное допущение — в Implementation Report;

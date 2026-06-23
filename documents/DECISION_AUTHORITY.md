@@ -1,6 +1,6 @@
 # DECISION_AUTHORITY.md
-v0.1
-2026-06-19
+v0.3
+2026-06-23
 
 ## Назначение
 
@@ -28,12 +28,14 @@ v0.1
 
 # Категории решений
 
-Все решения делятся на четыре категории:
+Все решения делятся на шесть категорий:
 
 1. Бизнес-решения
 2. Продуктовые решения
-3. Технические решения
-4. Процессные решения
+3. UX-решения
+4. Game Design решения
+5. Технические решения
+6. Процессные решения
 
 ---
 
@@ -107,6 +109,115 @@ Product Owner
 
 ---
 
+# UX-решения
+
+## Владелец
+
+UX Designer
+
+## Студия может
+
+- определять UX Notes;
+- формировать UX Requirements;
+- выявлять UX Risks;
+- выполнять UX Review;
+- классифицировать UX Findings и Severity;
+- предлагать улучшения информационной архитектуры, навигации, onboarding, discoverability, читаемости, когнитивной нагрузки и структуры экранов.
+
+## Требуется Product Owner Review
+
+Если UX Finding или UX Recommendation должен:
+
+- попасть в Backlog;
+- изменить PRD;
+- изменить пользовательские ожидания;
+- изменить состав возможностей релиза;
+- изменить критерии приёмки;
+- повлиять на roadmap.
+
+## Требуется согласование с владельцем другой области
+
+Если UX-решение требует:
+
+- изменения бизнес-цели или критериев успеха — вопрос маршрутизируется к заказчику через Studio Director;
+- изменения продукта — вопрос маршрутизируется к Product Owner;
+- изменения архитектуры — вопрос маршрутизируется к Solution Architect;
+- изменения game mechanics, balance, core loop, rewards, retention или game economy — вопрос не решается UX Designer и маршрутизируется через Studio Director как отдельная область вне UX scope.
+
+## Примеры
+
+### Самостоятельно
+
+- зафиксировать, что onboarding не объясняет ценность основной системы;
+- рекомендовать сделать путь к ключевому сценарию более обнаруживаемым;
+- классифицировать UX Finding как Major из-за высокой когнитивной нагрузки;
+- предложить улучшить структуру экрана без изменения состава функций.
+
+### Требуется Product Owner Review
+
+- добавить новый экран;
+- убрать или объединить пользовательский сценарий;
+- изменить критерий приёмки из-за UX Finding;
+- превратить UX Finding в Backlog item.
+
+---
+
+# Game Design решения
+
+## Владелец
+
+Game Designer
+
+## Студия может
+
+- определять Game Design Notes;
+- выявлять Gameplay Risks;
+- фиксировать Gameplay Opportunities;
+- выполнять Game Design Review;
+- выполнять Core Loop Review, Progression Review, Reward Review и Retention Review;
+- классифицировать Gameplay Findings и Severity;
+- предлагать улучшения core loop, progression, rewards, pacing, retention, player motivation, meaningful choices, long-term goals и conceptual game economy.
+
+## Требуется Product Owner Review
+
+Если Gameplay Finding или Game Design Recommendation должен:
+
+- попасть в Backlog;
+- изменить PRD;
+- изменить пользовательские ожидания;
+- изменить состав возможностей релиза;
+- изменить критерии приёмки;
+- повлиять на roadmap;
+- изменить product promise или целевую аудиторию.
+
+## Требуется согласование с владельцем другой области
+
+Если Game Design решение требует:
+
+- изменения бизнес-цели или критериев успеха — вопрос маршрутизируется к заказчику через Studio Director;
+- изменения продукта — вопрос маршрутизируется к Product Owner;
+- изменения UX usability, UI layout, navigation или onboarding usability — вопрос маршрутизируется к UX Designer;
+- изменения архитектуры — вопрос маршрутизируется к Solution Architect;
+- изменения реализации — вопрос маршрутизируется через Delivery Planner и Task Mode после подтверждённого Source Of Work.
+
+## Примеры
+
+### Самостоятельно
+
+- зафиксировать, что core loop не даёт достаточного feedback;
+- классифицировать Gameplay Finding как Major из-за доминирующей стратегии;
+- рекомендовать изменить reward timing без утверждения конкретной реализации;
+- описать conceptual economy risk для будущего Solution Design.
+
+### Требуется Product Owner Review
+
+- добавить новую progression system;
+- убрать или заменить reward category;
+- изменить критерий приёмки из-за Gameplay Finding;
+- превратить Gameplay Finding в Backlog item.
+
+---
+
 # Технические решения
 
 ## Владелец
@@ -177,6 +288,10 @@ Mission Mode не даёт Студии права:
 - принимать продуктовые решения вместо Product Owner.
 
 Новые идеи, найденные во время Mission, фиксируются как Opportunity и требуют решения Product Owner, если они должны попасть в roadmap, PRD, Backlog или следующую Mission.
+
+UX Findings, найденные во время Mission, фиксируются в UX Review и требуют Product Owner Review, если они должны попасть в roadmap, PRD, Backlog или следующую Mission.
+
+Gameplay Findings, найденные во время Mission, фиксируются в Game Design Review и требуют Product Owner Review, если они должны попасть в roadmap, PRD, Backlog или следующую Mission.
 
 Mission обязана остановиться и передать вопрос Studio Director, если:
 

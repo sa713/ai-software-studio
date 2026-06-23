@@ -1,6 +1,6 @@
 # CODEX_TASK_FORMULATION_PROCESS.md
-v0.1
-2026-06-22
+v0.3
+2026-06-23
 
 ## Назначение
 
@@ -68,12 +68,38 @@ Delivery Planner не должен:
 - решение Studio Director;
 - результат Validator;
 - результат Release Review;
+- UX Finding после Product Owner Review;
+- Gameplay Finding после Product Owner Review;
 - явно зафиксированный проектный артефакт.
 
 Если задача создаётся внутри Mission, Source Of Work должен содержать Mission ID и trace:
 
 ```text
 Mission → Roadmap / Review / Backlog Item → Task
+```
+
+Если задача создаётся из UX Finding, Source Of Work должен содержать Product Owner Review и trace:
+
+```text
+UX Review → UX Finding → Product Owner Review → Task
+```
+
+Если UX Finding найден внутри Mission, trace должен сохранять связь с Mission:
+
+```text
+Mission → Roadmap / Review / Backlog Item → UX Review → UX Finding → Product Owner Review → Task
+```
+
+Если задача создаётся из Gameplay Finding, Source Of Work должен содержать Product Owner Review и trace:
+
+```text
+Game Design Review → Gameplay Finding → Product Owner Review → Task
+```
+
+Если Gameplay Finding найден внутри Mission, trace должен сохранять связь с Mission:
+
+```text
+Mission → Roadmap / Review / Backlog Item → Game Design Review → Gameplay Finding → Product Owner Review → Task
 ```
 
 Обязательный формат раздела:

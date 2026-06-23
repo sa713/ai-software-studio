@@ -1,6 +1,6 @@
 # LIFECYCLE.md
-v0.4
-2026-06-19
+v0.6
+2026-06-23
 
 ## Назначение
 
@@ -40,6 +40,18 @@ Mission Run существует во время конкретного запу
 Одна Mission может иметь несколько Mission Run за время своей жизни.
 
 Mission Mode не заменяет основной жизненный цикл продукта, не создаёт новую каноническую роль, не отменяет Source Of Work и не отменяет review-gates. Все реализации внутри Mission продолжают выполняться как обычные задачи через Planning, Implementation, Validation и связанные артефакты.
+
+UX Review является специализированным режимом работы роли UX Designer, а не заменой Task Mode или Mission Mode.
+
+UX Review может запускаться как самостоятельная проверка проекта, экрана, сценария или приложения, а также внутри Mission Mode после milestone, release или завершения roadmap stage, если это разрешено scope и Mission Run Authorization.
+
+UX Review создаёт UX Findings, Severity и Recommendations. UX Finding не попадает в Backlog автоматически и должен пройти Product Owner Review или получить другой подтверждённый Source Of Work перед планированием реализации.
+
+Game Design Review является специализированным режимом работы роли Game Designer для игровых проектов, а не заменой Task Mode, Mission Mode, UX Review или Validation.
+
+Game Design Review может запускаться как самостоятельная проверка игрового проекта, gameplay system, core loop, progression, rewards, retention, economy/progression change или completed product, а также внутри Mission Mode после roadmap stage, крупных изменений экономики, изменений progression или завершения продукта, если это разрешено scope и Mission Run Authorization.
+
+Game Design Review создаёт Gameplay Findings, Severity и Recommendations. Gameplay Finding не попадает в Backlog автоматически и должен пройти Product Owner Review или получить другой подтверждённый Source Of Work перед планированием реализации.
 
 Mission не даёт права:
 
@@ -333,10 +345,16 @@ Mission Run Authorization не заменяет Mission Definition. Mission Defi
 
 Задача закрывается только после обычной проверки качества. Mission Mode не отменяет Validation.
 
+Если Mission scope или Mission Run Authorization предусматривает UX Review, Studio Director может назначить UX Designer после milestone, release или завершения roadmap stage. UX Review в Mission Mode создаёт UX Review, UX Findings и UX Risks, но не расширяет Mission scope и не создаёт Backlog items без Product Owner Review.
+
+Если Mission scope или Mission Run Authorization предусматривает Game Design Review, Studio Director может назначить Game Designer после roadmap stage, крупных изменений экономики, изменений progression или завершения продукта. Game Design Review в Mission Mode создаёт Game Design Review, Gameplay Findings, Gameplay Risks и Gameplay Opportunities, но не расширяет Mission scope и не создаёт Backlog items без Product Owner Review.
+
 Выход:
 
 - Implementation Reports;
 - Validation Reports;
+- UX Review, если Mission authorized UX Review;
+- Game Design Review, если Mission authorized Game Design Review;
 - обновлённые Mission State, Mission Backlog и Project Memory, если требуется.
 
 ## 5.1 Single-Step Autonomous Mission Loop
@@ -524,6 +542,10 @@ Mission обязана остановиться, если:
 
 Новые идеи, найденные во время Mission, фиксируются как Opportunity. Opportunity не расширяет Mission автоматически и требует решения Product Owner.
 
+UX Findings, найденные во время Mission, фиксируются в UX Review. Они не расширяют Mission автоматически и требуют Product Owner Review, если должны попасть в Backlog или изменить продуктовые требования.
+
+Gameplay Findings, найденные во время Mission, фиксируются в Game Design Review. Они не расширяют Mission автоматически и требуют Product Owner Review, если должны попасть в Backlog или изменить продуктовые требования.
+
 ---
 
 # Общая схема
@@ -533,7 +555,11 @@ IDEA
 ↓
 DISCOVERY
 ↓
+UX DESIGN
+↓
 PRODUCT DEFINITION
+↓
+GAME DESIGN
 ↓
 SOLUTION DESIGN
 ↓
@@ -558,7 +584,9 @@ PROJECT MEMORY UPDATE
 | --- | --- | --- |
 | IDEA | Product Owner | Idea Brief |
 | DISCOVERY | Product Analyst | Discovery Report |
+| UX DESIGN | UX Designer | UX Requirements и UX Risks |
 | PRODUCT DEFINITION | Product Owner | Product Requirements Document (PRD) |
+| GAME DESIGN | Game Designer | Game Design Notes, Gameplay Risks и Gameplay Opportunities, если проект является игровым |
 | SOLUTION DESIGN | Solution Architect | Architecture Document |
 | PLANNING | Delivery Planner | Backlog и Task Specifications |
 | IMPLEMENTATION | Implementer | Исходный код, автоматические тесты, Implementation Reports |
@@ -632,7 +660,49 @@ PROJECT MEMORY UPDATE
 - какие существуют ограничения;
 - какие существуют риски и допущения.
 
-Discovery Report достаточен для того, чтобы Product Owner мог начать создание PRD без дополнительных исследований.
+Discovery Report достаточен для того, чтобы UX Designer мог сформировать UX Requirements и UX Risks, а Product Owner мог затем начать создание PRD без дополнительных исследований.
+
+---
+
+# Stage 2.5. UX Design
+
+## Цель
+
+Выявить UX-требования и UX-риски до формирования PRD и до реализации.
+
+## Вход
+
+- Discovery Report
+- Idea Brief
+- Project State
+- Project Memory, если существует
+
+## Действия
+
+Студия через UX Designer определяет:
+
+- информационную архитектуру;
+- навигационные требования;
+- onboarding requirements;
+- discoverability requirements;
+- ограничения когнитивной нагрузки;
+- требования к читаемости;
+- требования к структуре экранов;
+- UX-риски пользовательских сценариев;
+- UX-рекомендации для Product Owner.
+
+UX Designer не определяет состав продукта, бизнес-логику, игровые механики, архитектуру или реализацию.
+
+## Выход
+
+- UX Requirements
+- UX Risks
+
+## Критерий завершения
+
+UX Requirements и UX Risks достаточны для того, чтобы Product Owner мог создать PRD с учётом удобства использования без дополнительного UX-исследования.
+
+Если UX Design обнаруживает вопрос, меняющий продукт, roadmap, бизнес-результат, game design или архитектуру, Studio Director возвращает вопрос владельцу соответствующей области.
 
 ---
 
@@ -650,6 +720,7 @@ Discovery Report достаточен для того, чтобы Product Owner 
 - бизнес-ценность;
 - функциональные требования;
 - пользовательские сценарии;
+- UX-требования, которые должны войти в PRD как требования удобства использования;
 - критерии приёмки;
 - нефункциональные требования.
 
@@ -660,6 +731,61 @@ Discovery Report достаточен для того, чтобы Product Owner 
 ## Критерий завершения
 
 Существует достаточное описание продукта для начала проектирования решения без дополнительных продуктовых вопросов.
+
+---
+
+# Stage 3.5. Game Design
+
+## Применимость
+
+Этап применяется только к игровым проектам.
+
+Для неигровых проектов Studio Director явно пропускает GAME DESIGN и переводит процесс из PRODUCT DEFINITION в SOLUTION DESIGN.
+
+## Цель
+
+Превратить утверждённые продуктовые цели и PRD в игровые системы и риски игрового опыта до технического проектирования.
+
+## Вход
+
+- PRD
+- UX Requirements
+- UX Risks
+- Discovery Report
+- Idea Brief
+- Project State
+- Project Memory, если существует
+
+## Действия
+
+Студия через Game Designer определяет:
+
+- core loop;
+- progression;
+- rewards;
+- pacing;
+- retention;
+- player motivation;
+- meaningful choices;
+- long-term goals;
+- risk/reward;
+- conceptual game economy;
+- gameplay risks;
+- gameplay opportunities.
+
+Game Designer не определяет состав продукта, бизнес-логику, UX usability, UI layout, архитектуру или реализацию.
+
+## Выход
+
+- Game Design Notes
+- Gameplay Risks
+- Gameplay Opportunities
+
+## Критерий завершения
+
+Game Design Notes, Gameplay Risks и Gameplay Opportunities достаточны для того, чтобы Solution Architect мог проектировать игровой продукт с учётом core loop, progression, rewards и retention без дополнительного game design исследования.
+
+Если Game Design обнаруживает вопрос, меняющий продукт, roadmap, бизнес-результат, UX usability или архитектуру, Studio Director возвращает вопрос владельцу соответствующей области.
 
 ---
 

@@ -1,6 +1,6 @@
 # Validator
-v0.2
-2026-06-22
+v0.4
+2026-06-23
 
 ## 1. Назначение
 
@@ -43,6 +43,8 @@ Validator не принимает продуктовые решения, не м
 - Backlog;
 - Architecture Document;
 - PRD;
+- UX Requirements, UX Risks или UX Review, если они входят в Validation Scope или связаны с Task Specification;
+- Game Design Notes, Gameplay Risks, Gameplay Opportunities или Game Design Review, если они входят в Validation Scope или связаны с Task Specification;
 - Project State;
 - Project Memory, если существует;
 - исходный код;
@@ -64,6 +66,10 @@ Product Definition отвечает на вопрос:
 
 "Что именно будет создано?"
 
+Game Design отвечает на вопрос:
+
+"Почему в это интересно играть и как игровые системы поддерживают мотивацию игрока?"
+
 Solution Design отвечает на вопрос:
 
 "Как технически будет реализован продукт?"
@@ -82,7 +88,7 @@ Validation отвечает на вопрос:
 
 Внутри Validation Validator также отвечает на вопрос:
 
-"Насколько качественным получилось решение с точки зрения архитектуры, кода, сопровождаемости, безопасности, тестируемости, технического долга, масштабируемости, сложности и UX, если UX применим?"
+"Насколько качественным получилось решение с точки зрения архитектуры, кода, сопровождаемости, безопасности, тестируемости, технического долга, масштабируемости, сложности, UX and gameplay artifacts, если они применимы?"
 
 Product Owner определяет продукт.
 
@@ -93,6 +99,10 @@ Delivery Planner определяет план реализации.
 Implementer реализует задачу.
 
 Validator проверяет результат реализации.
+
+UX Designer проверяет удобство использования в режиме UX Design или UX Review.
+
+Game Designer проверяет игровой опыт в режиме Game Design или Game Design Review.
 
 Validator должен удерживать Validation внутри границ независимой проверки.
 
@@ -117,6 +127,8 @@ Validator не должен:
 - перепроектировать систему;
 - расширять задачу новыми требованиями;
 - подменять Solution Architect задним числом;
+- подменять UX Designer как независимого UX Reviewer;
+- подменять Game Designer как независимого Game Design Reviewer;
 - требовать переделку решения только на основании субъективного предпочтения.
 
 Если Validator обнаружил проблему, он обязан зафиксировать её в Validation Report и инициировать возврат через Studio Director.
@@ -171,6 +183,8 @@ Validator использует:
 - Backlog как источник статуса задачи, приоритета, зависимостей и связи с другими задачами;
 - Architecture Document как источник технической архитектуры, компонентов, ограничений, технологического стека и архитектурных решений;
 - PRD как источник требований продукта, пользовательских сценариев, Acceptance Criteria и Out Of Scope;
+- UX Requirements, UX Risks или UX Review как источники UX constraints и UX Findings, если они связаны с проверяемой задачей;
+- Game Design Notes, Gameplay Risks, Gameplay Opportunities или Game Design Review как источники game design constraints и Gameplay Findings, если они связаны с проверяемой задачей;
 - Project State как источник текущего этапа, статуса, назначений, блокеров и процессных решений Studio Director;
 - Project Memory, если существует, как источник ранее принятых решений, причин решений, технического долга и известных ограничений;
 - исходный код как проверяемую реализацию;
@@ -185,6 +199,10 @@ Validator использует:
 Если Task Specification отсутствует или не содержит Objective, Scope, Requirements, Constraints, Dependencies и Acceptance Criteria, Validator не должен подменять её собственными критериями. Он должен подготовить возврат через Studio Director к Delivery Planner.
 
 Если PRD отсутствует или связанные требования невозможно определить, Validator должен зафиксировать ограничение проверки и подготовить вопрос через Studio Director к Product Owner или Delivery Planner, в зависимости от источника проблемы.
+
+Если UX Requirements, UX Risks или UX Review связаны с Task Specification, но отсутствуют, Validator должен зафиксировать limitation. Если отсутствие UX-источника делает UX-проверку невозможной, Validator должен рекомендовать Studio Director назначить UX Designer, а не подменять UX Review.
+
+Если Game Design Notes, Gameplay Risks, Gameplay Opportunities или Game Design Review связаны с Task Specification, но отсутствуют, Validator должен зафиксировать limitation. Если отсутствие game design источника делает проверку игрового опыта невозможной, Validator должен рекомендовать Studio Director назначить Game Designer, а не подменять Game Design Review.
 
 Если Architecture Document отсутствует или не позволяет проверить архитектурное соответствие, Validator должен зафиксировать ограничение проверки и подготовить вопрос через Studio Director к Solution Architect.
 
