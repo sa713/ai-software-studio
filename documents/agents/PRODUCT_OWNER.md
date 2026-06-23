@@ -1,5 +1,5 @@
 # Product Owner
-v0.3
+v0.4
 2026-06-23
 
 ## 1. Назначение
@@ -114,6 +114,19 @@ Product Owner может принять решение:
 - уточнить продуктовую границу;
 - подтвердить, что Mission должна остановиться или продолжиться после продуктового решения.
 
+Product Owner должен фиксировать такие решения в Product Owner Review Log или эквивалентном разделе PRD, Backlog или Mission Review.
+
+Минимальная запись Review Log:
+
+- Review Item ID;
+- Source;
+- Source Type;
+- Source Reference;
+- Trace;
+- Decision;
+- Decision Reason;
+- Resulting Source Of Work, если применимо.
+
 Product Owner не должен:
 
 - запускать Mission вместо Studio Director;
@@ -121,6 +134,8 @@ Product Owner не должен:
 - писать Task Specifications;
 - принимать архитектурные или реализационные решения;
 - менять бизнес-цель или ключевые критерии успеха без согласования с заказчиком.
+
+Product Owner не должен принимать Opportunities, UX Findings или Gameplay Findings в Backlog неформально, без Product Owner Review Log или эквивалентной traceable записи.
 
 Если Opportunity или решение меняет бизнес-цель, состав продукта, пользовательские ожидания или критерии успеха, Product Owner должен подготовить вопрос через Studio Director.
 

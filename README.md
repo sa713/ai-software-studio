@@ -6,6 +6,8 @@ AI Software Studio — автономная агентная студия раз
 
 Основной принцип работы: каждый этап имеет владельца, результат фиксируется в каноническом артефакте, а контекст передаётся между агентами через документы и Project Memory, а не через устные договорённости.
 
+Начиная с v2.1 Студия использует Operating Profiles: `Light`, `Standard` и `Deep`. Профиль не меняет роли и Source Of Work, но регулирует глубину lifecycle, объём артефактов, Mission reporting и Validation, чтобы малые задачи не проходили через полный тяжёлый процесс.
+
 ## Канонические документы
 
 - [MANIFEST.md](documents/MANIFEST.md) — определяет миссию, главные принципы, границы ответственности заказчика и Студии, автономность, качество, прозрачность и память проекта.
@@ -13,6 +15,7 @@ AI Software Studio — автономная агентная студия раз
 - [ARTIFACTS.md](documents/ARTIFACTS.md) — описывает канонические артефакты, их владельцев, назначение и то, для какой информации каждый артефакт является источником истины.
 - [AGENTS.md](documents/AGENTS.md) — определяет канонические роли агентов, их ответственность, права, ограничения и правила взаимодействия.
 - [DECISION_AUTHORITY.md](documents/DECISION_AUTHORITY.md) — определяет, какие решения принимает заказчик, какие принимает Студия, когда нужна эскалация и как разрешаются конфликты приоритетов.
+- [OPERATING_PROFILES.md](documents/OPERATING_PROFILES.md) — определяет профили Light / Standard / Deep, compact artifacts, validation depth, Mission profiles, Product Owner Review Log и Mission Index.
 - [PROJECT_STATE.md](documents/PROJECT_STATE.md) — определяет Project State как служебный объект оркестрации, его владельца, структуру, статусы и правила обновления.
 - [RELEASE_APPROVAL.md](documents/RELEASE_APPROVAL.md) — определяет этап RELEASE APPROVAL, материалы согласования, решения заказчика и маршруты после приёмки.
 
@@ -41,11 +44,12 @@ AI Software Studio — автономная агентная студия раз
 3. [ARTIFACTS.md](documents/ARTIFACTS.md)
 4. [AGENTS.md](documents/AGENTS.md)
 5. [DECISION_AUTHORITY.md](documents/DECISION_AUTHORITY.md)
-6. [PROJECT_STATE.md](documents/PROJECT_STATE.md)
-7. [RELEASE_APPROVAL.md](documents/RELEASE_APPROVAL.md)
-8. [инструкции агентов](documents/agents/)
+6. [OPERATING_PROFILES.md](documents/OPERATING_PROFILES.md)
+7. [PROJECT_STATE.md](documents/PROJECT_STATE.md)
+8. [RELEASE_APPROVAL.md](documents/RELEASE_APPROVAL.md)
+9. [инструкции агентов](documents/agents/)
 
-Такой порядок идёт от общего смысла к исполнению. Сначала нужно понять, зачем существует Студия и какие принципы ей управляют. Затем — какой жизненный цикл она проходит, какие артефакты создаёт, какие роли за них отвечают и кто имеет право принимать решения. После этого стоит изучить Project State как модель оркестрации и Release Approval как модель приёмки заказчиком. Только затем имеет смысл читать инструкции отдельных агентов.
+Такой порядок идёт от общего смысла к исполнению. Сначала нужно понять, зачем существует Студия и какие принципы ей управляют. Затем — какой жизненный цикл она проходит, какие артефакты создаёт, какие роли за них отвечают, кто имеет право принимать решения и какой Operating Profile применим к работе. После этого стоит изучить Project State как модель оркестрации и Release Approval как модель приёмки заказчиком. Только затем имеет смысл читать инструкции отдельных агентов.
 
 ## Полный жизненный цикл
 
@@ -78,6 +82,7 @@ Idea
 
 - [documents/](documents/) — канонические документы Студии: манифест, жизненный цикл, артефакты, роли, полномочия, Project State, Release Approval и сопутствующие отчёты.
 - [documents/agents/](documents/agents/) — подробные инструкции канонических агентов.
+- [documents/missions/MISSION_INDEX.md](documents/missions/MISSION_INDEX.md) — навигационный индекс миссий, если он создан для текущего состояния репозитория.
 - `deploy_keys/` — служебная инфраструктурная директория для локального деплоя или публикации. Она не является частью канонической документации Студии.
 
 ## Что не является источником истины
@@ -88,4 +93,4 @@ README не определяет жизненный цикл, структуру
 
 При конфликте между README и каноническими документами действует соответствующий канонический документ.
 
-Приоритет документов, артефактов и решений определяется системой Студии, прежде всего правилами из [MANIFEST.md](documents/MANIFEST.md), [LIFECYCLE.md](documents/LIFECYCLE.md), [ARTIFACTS.md](documents/ARTIFACTS.md), [AGENTS.md](documents/AGENTS.md), [DECISION_AUTHORITY.md](documents/DECISION_AUTHORITY.md), [PROJECT_STATE.md](documents/PROJECT_STATE.md) и [RELEASE_APPROVAL.md](documents/RELEASE_APPROVAL.md).
+Приоритет документов, артефактов и решений определяется системой Студии, прежде всего правилами из [MANIFEST.md](documents/MANIFEST.md), [LIFECYCLE.md](documents/LIFECYCLE.md), [ARTIFACTS.md](documents/ARTIFACTS.md), [AGENTS.md](documents/AGENTS.md), [DECISION_AUTHORITY.md](documents/DECISION_AUTHORITY.md), [OPERATING_PROFILES.md](documents/OPERATING_PROFILES.md), [PROJECT_STATE.md](documents/PROJECT_STATE.md) и [RELEASE_APPROVAL.md](documents/RELEASE_APPROVAL.md).

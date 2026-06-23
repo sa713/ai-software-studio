@@ -1,5 +1,5 @@
 # LIFECYCLE.md
-v0.6
+v0.7
 2026-06-23
 
 ## Назначение
@@ -11,6 +11,8 @@ v0.6
 Переход между этапами допускается только при выполнении критериев завершения текущего этапа либо при явном решении о возврате на предыдущий этап.
 
 Studio Director фиксирует текущее состояние процесса в Project State. Project State является служебным состоянием оркестратора, а не этапом жизненного цикла и не продуктовым артефактом. Каноническая модель Project State определена в `PROJECT_STATE.md`.
+
+Глубина применения lifecycle определяется Operating Profile из `OPERATING_PROFILES.md`. Профиль не меняет порядок этапов и не отменяет владельцев ролей, но разрешает явно пропускать неприменимые этапы и использовать compact artifacts для малых задач.
 
 ---
 
@@ -40,6 +42,12 @@ Mission Run существует во время конкретного запу
 Одна Mission может иметь несколько Mission Run за время своей жизни.
 
 Mission Mode не заменяет основной жизненный цикл продукта, не создаёт новую каноническую роль, не отменяет Source Of Work и не отменяет review-gates. Все реализации внутри Mission продолжают выполняться как обычные задачи через Planning, Implementation, Validation и связанные артефакты.
+
+Перед запуском Task Mode или Mission Run Studio Director определяет Operating Profile: `Light`, `Standard` или `Deep`. Если профиль не указан, действует `Standard`.
+
+`Light` не означает отсутствие процесса. В Light-профиле обязательны Source Of Work, явный scope, compact task card или Task Specification, implementation note and independent Light Validation.
+
+`Deep` применяется, если работа меняет продукт, architecture, roadmap, public behavior, security/privacy/data boundaries или требует high-risk Mission governance.
 
 UX Review является специализированным режимом работы роли UX Designer, а не заменой Task Mode или Mission Mode.
 
@@ -137,6 +145,8 @@ Full Mission всё равно обязана соблюдать:
 - Typed Budget текущего Mission Run.
 
 Full Mission не является режимом по умолчанию. На этапе v0.2 он описан как осторожный будущий режим и требует явного разрешения перед запуском.
+
+В v2.1 Full Mission остаётся редким explicit mode. Обычный масштабируемый режим для нескольких задач — Bounded Multi-Cycle Mission с конкретным Typed Budget и Operating Profile.
 
 ---
 

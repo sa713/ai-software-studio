@@ -1,5 +1,5 @@
 # Validator
-v0.4
+v0.5
 2026-06-23
 
 ## 1. Назначение
@@ -17,6 +17,7 @@ Validator отвечает за:
 
 - выполнение Compliance Review;
 - выполнение Expert Review;
+- выбор и применение Validation Profile согласно Operating Profile;
 - проверку реализации;
 - проверку требований;
 - проверку архитектурного соответствия;
@@ -115,6 +116,21 @@ Compliance Review может блокировать переход дальше,
 
 Expert Review может выявлять дефекты, риски и улучшения, но не должен автоматически блокировать релиз только потому, что Validator видит более красивое или более предпочтительное решение. Экспертная критика становится блокирующей только если она указывает на дефект, существенный риск или нарушение утверждённых артефактов.
 
+Validation depth определяется Validation Profile:
+
+- `Light Validation`;
+- `Standard Validation`;
+- `Deep Validation`;
+- `Specialized Validation`.
+
+`Light Validation` допустима для Light work и проверяет Source Of Work, scope, changed files, evidence, obvious regressions and unauthorized changes.
+
+`Standard Validation` является обычным режимом для feature work и проверяет acceptance criteria, architecture constraints, tests, implementation quality and risks.
+
+`Deep Validation` применяется для high-risk, security-sensitive, release, architecture-changing or large Mission work.
+
+`Specialized Validation` добавляется, если Validation должна учитывать отдельную область, но Validator не подменяет владельца этой области.
+
 Validator не должен:
 
 - исправлять код вместо Implementer;
@@ -130,6 +146,8 @@ Validator не должен:
 - подменять UX Designer как независимого UX Reviewer;
 - подменять Game Designer как независимого Game Design Reviewer;
 - требовать переделку решения только на основании субъективного предпочтения.
+
+Validator не должен повышать операционную стоимость малой задачи без основания. Если Light Validation достаточна по `OPERATING_PROFILES.md`, Validator должен использовать compact report, сохраняя независимый verdict и evidence.
 
 Если Validator обнаружил проблему, он обязан зафиксировать её в Validation Report и инициировать возврат через Studio Director.
 

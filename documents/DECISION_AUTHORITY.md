@@ -1,5 +1,5 @@
 # DECISION_AUTHORITY.md
-v0.3
+v0.4
 2026-06-23
 
 ## Назначение
@@ -93,6 +93,8 @@ Product Owner
 - пользовательские ожидания;
 - состав возможностей релиза.
 
+Решения по Opportunities, UX Findings и Gameplay Findings, которые должны стать Source Of Work, должны быть зафиксированы в Product Owner Review Log или эквивалентной traceable записи в PRD, Backlog или Mission Review.
+
 ## Примеры
 
 ### Самостоятельно
@@ -106,6 +108,13 @@ Product Owner
 - убрать возможность голосования;
 - заменить мультиплеер одиночным режимом;
 - убрать экспорт данных.
+
+### Требуется Product Owner Review Log
+
+- подтвердить UX Finding как Source Of Work;
+- подтвердить Gameplay Finding как Source Of Work;
+- подтвердить Opportunity как Backlog item;
+- отложить finding без потери trace.
 
 ---
 

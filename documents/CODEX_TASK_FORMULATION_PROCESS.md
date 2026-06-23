@@ -1,5 +1,5 @@
 # CODEX_TASK_FORMULATION_PROCESS.md
-v0.3
+v0.4
 2026-06-23
 
 ## Назначение
@@ -39,6 +39,7 @@ Delivery Planner отвечает за:
 - формулирование ручной проверки;
 - описание того, что Codex должен прислать на проверку;
 - контроль, что задача достаточно мала для независимой реализации и проверки.
+- выбор compact task card для Light work, если это разрешено `OPERATING_PROFILES.md`.
 
 Delivery Planner не должен:
 
@@ -111,7 +112,10 @@ Mission → Roadmap / Review / Backlog Item → Game Design Review → Gameplay 
 - Source Type:
 - Source Reference:
 - Trace:
+- Authorizing Decision:
 ```
+
+`Authorizing Decision` обязателен, если Source Of Work требует Product Owner Review, Studio Director Review или другого решения. Если дополнительное решение не требуется, поле может содержать `Not Required`.
 
 Примеры:
 
@@ -123,6 +127,21 @@ Mission → Roadmap / Review / Backlog Item → Game Design Review → Gameplay 
 Без указания Source Of Work задача считается некорректной.
 
 Если Source Of Work отсутствует, Delivery Planner не должен формулировать задачу. Он должен вернуть запрос на уточнение или подготовить эскалацию через Studio Director.
+
+## Operating Profile
+
+Каждая задача должна указывать Operating Profile:
+
+- `Light`;
+- `Standard`;
+- `Deep`;
+- `Specialized`, если применимо как дополнение.
+
+Если профиль не указан, действует `Standard`.
+
+Для `Light` задачи допускается compact task card. Она должна содержать Source Of Work, Scope, Out Of Scope, affected files or artifacts, acceptance criteria and Validation Profile.
+
+`Light` запрещён, если задача меняет business goal, roadmap, product promise, acceptance criteria, architecture, public contract, security/privacy/data boundaries или требует high-risk Mission governance.
 
 ## Входные данные
 

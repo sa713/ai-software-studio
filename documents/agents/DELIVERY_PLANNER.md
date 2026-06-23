@@ -1,5 +1,5 @@
 # Delivery Planner
-v0.3
+v0.4
 2026-06-23
 
 ## 1. Назначение
@@ -20,6 +20,7 @@ Delivery Planner отвечает за:
 - контроль зависимостей между задачами;
 - создание Backlog;
 - создание Task Specifications;
+- создание compact task cards для Light work, если это разрешено Operating Profile;
 - создание и обновление Mission Backlog, если активна Mission;
 - формулирование готовых к передаче Codex задач, если Implementer работает через Codex;
 - подготовку проекта к IMPLEMENTATION.
@@ -182,6 +183,21 @@ Delivery Planner не отвечает за:
 
 Если Source Of Work отсутствует, Delivery Planner не должен формулировать задачу. Вместо этого он должен вернуть запрос на уточнение или подготовить эскалацию через Studio Director.
 
+Если Operating Profile — `Light`, Delivery Planner может использовать compact task card вместо full Task Specification.
+
+Compact task card должен содержать:
+
+- Task ID;
+- Operating Profile;
+- Source Of Work;
+- Scope;
+- Out Of Scope;
+- Affected Files or Artifacts;
+- Acceptance Criteria;
+- Validation Profile.
+
+Delivery Planner не должен использовать compact task card, если задача меняет product requirements, architecture, public contract, security/privacy/data boundaries или требует Deep Validation.
+
 ## Mission Mode
 
 Если активна Mission, Delivery Planner работает поверх обычного Planning.
@@ -192,6 +208,7 @@ Delivery Planner использует:
 - `MISSION_STATE.md` как источник текущего состояния Mission;
 - `MISSION_BACKLOG.md` как Mission-specific список связанных задач;
 - последний `MISSION_REVIEW.md`, если он существует, как источник решения продолжить, остановить или изменить порядок задач.
+- `OPERATING_PROFILES.md` как источник Mission Light / Standard / Deep правил;
 - UX Review и UX Findings, если Mission authorized UX Review и Product Owner Review подтвердил работу.
 - Game Design Review и Gameplay Findings, если Mission authorized Game Design Review и Product Owner Review подтвердил работу.
 

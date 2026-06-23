@@ -1,5 +1,5 @@
 # ARTIFACTS.md
-v0.7
+v0.8
 2026-06-23
 
 ## Назначение
@@ -9,6 +9,8 @@ v0.7
 Артефакт является официальным носителем знаний, решений или результатов работы.
 
 ARTIFACTS.md является единственным источником истины для структуры артефактов. Инструкции агентов могут ссылаться на эти структуры, но не должны быть единственным местом, где структура артефакта определена.
+
+Глубина заполнения артефактов определяется `OPERATING_PROFILES.md`. Этот документ задаёт canonical sections, а Operating Profiles определяют, когда допустимы compact forms, объединённые sections or optional standalone files.
 
 Все взаимодействие между агентами должно происходить через артефакты, Project Memory и процессные решения Studio Director.
 
@@ -92,6 +94,28 @@ Game design
 - `Source Artifacts`.
 
 `Source Artifacts` содержит ссылки на артефакты или входы, из которых получен текущий артефакт. Если артефакт создаётся из исходного сообщения заказчика и входных артефактов ещё нет, это должно быть указано явно.
+
+## Operating Profile
+
+Если артефакт создаётся в Task Mode или Mission Mode после v2.1, он должен указывать применимый Operating Profile, когда профиль влияет на глубину документа:
+
+- `Light`;
+- `Standard`;
+- `Deep`;
+- `Specialized`, если применимо как дополнение.
+
+Для historical artifacts поле не требуется.
+
+Compact artifact обязан сохранять:
+
+- Source Of Work или Source Artifacts;
+- владельца;
+- результат;
+- changed scope;
+- validation evidence, если артефакт относится к Implementation или Validation;
+- ссылки на affected artifacts.
+
+Compact form не должна скрывать decisions, risks, assumptions, findings, Product Owner Review need или stop conditions.
 
 ---
 
@@ -3292,7 +3316,7 @@ Mission существует как долгоживущий объект раб
 
 Mission Run Authorization должен существовать до выбора backlog item для выполнения. Mission не может стартовать без `MISSION_RUN.md`.
 
-`MISSION_RUN.md` хранит run-specific параметры: autonomy level, allowed scope, typed budget, stop conditions, run status and run result.
+`MISSION_RUN.md` хранит run-specific параметры: autonomy level, operating profile, allowed scope, typed budget, stop conditions, run status and run result.
 
 `MISSION_RUN.md` не заменяет `MISSION.md`, `MISSION_STATE.md`, `MISSION_BACKLOG.md`, Task Specification, Implementation Report, Validation Report или `MISSION_REVIEW.md`.
 
@@ -3321,6 +3345,7 @@ Studio Director создаёт Mission Run Authorization перед запуск
 - Mission Run ID;
 - Mission ID, к которой относится запуск;
 - Autonomy Level конкретного запуска;
+- Operating Profile конкретного запуска;
 - Allowed Scope конкретного запуска;
 - Typed Budget конкретного запуска;
 - Stop Conditions конкретного запуска;
@@ -3330,7 +3355,7 @@ Studio Director создаёт Mission Run Authorization перед запуск
 - параметров запуска;
 - результата запуска.
 
-Mission Run Authorization является единственным источником истины для run-specific autonomy level and typed budget.
+Mission Run Authorization является единственным источником истины для run-specific autonomy level, operating profile and typed budget.
 
 ## Каноническая структура
 
@@ -3355,6 +3380,7 @@ Mission Run Authorization является единственным источн
 - `Mission Run ID`;
 - `Mission ID`;
 - `Autonomy Level`;
+- `Operating Profile`;
 - `Allowed Scope`;
 - `Typed Budget`;
 - `Stop Conditions`;
@@ -3369,6 +3395,14 @@ Mission Run Authorization является единственным источн
 - `Full Mission`.
 
 `Full Mission` не является значением по умолчанию и требует явного разрешения.
+
+Допустимые значения `Operating Profile`:
+
+- `Mission Light`;
+- `Mission Standard`;
+- `Mission Deep`.
+
+Если `Operating Profile` не указан, действует `Mission Standard`.
 
 Допустимые значения `Run Status`:
 
@@ -3858,16 +3892,23 @@ Project State не должен дублировать содержимое ка
 
 # Канонические артефакты проекта
 
-Независимо от размера проекта обязательно должны существовать:
+Для продуктовой работы в `Standard` или `Deep` обязательно должны существовать:
 
 1. PRD
 2. Architecture Document
 3. Backlog
 4. Project Memory
 
-Эти артефакты образуют ядро знаний проекта.
+Эти артефакты образуют ядро знаний продукта.
 
-Удаление или потеря любого из них считается критическим дефектом процесса.
+Для `Light` задач эти артефакты обязательны только если задача меняет соответствующую область:
+
+- PRD обязателен, если меняются product requirements, acceptance criteria, user expectations or scope;
+- Architecture Document обязателен, если меняется architecture, public contract, data model or technical constraints;
+- Backlog обязателен, если задача входит в планируемый набор работ, а не является single compact task;
+- Project Memory обязателен, если решение имеет долгосрочное значение.
+
+Удаление или потеря обязательного для выбранного профиля артефакта считается дефектом процесса.
 
 ---
 
@@ -3875,7 +3916,7 @@ Project State не должен дублировать содержимое ка
 
 Если Mission Mode не активен, Mission-артефакты не требуются.
 
-Если Mission Mode активен, должны существовать:
+Если Mission Mode активен в `Mission Standard` или `Mission Deep`, должны существовать:
 
 1. `MISSION.md`
 2. `MISSION_STATE.md`
@@ -3883,8 +3924,150 @@ Project State не должен дублировать содержимое ка
 4. `MISSION_RUN.md` для каждого авторизованного Mission Run
 5. `MISSION_REVIEW.md` после первого Mission Review или завершения первого цикла
 
+Если Mission Mode активен в `Mission Light`, допускается compact Mission Backlog и compact Mission Review, но `MISSION.md` и `MISSION_RUN.md` обязательны.
+
 Mission Run не может стартовать без `MISSION_RUN.md`.
 
 Mission-артефакты не заменяют PRD, Architecture Document, Backlog, Task Specifications, Implementation Reports, Validation Reports, Release Package или Project Memory.
 
 Потеря Mission-артефакта активной Mission считается дефектом оркестрации Mission Mode, но не меняет обязательный минимальный набор обычного Task Mode.
+
+---
+
+# v2.1 Artifact Simplification Rules
+
+## Compact Task Card
+
+Для `Light` задач Task Specification может быть compact task card.
+
+Обязательные поля:
+
+- `Task ID`;
+- `Operating Profile: Light`;
+- `Source Of Work`;
+- `Scope`;
+- `Out Of Scope`;
+- `Affected Files or Artifacts`;
+- `Acceptance Criteria`;
+- `Validation Profile`.
+
+Compact task card не должен использоваться для feature work, architecture change, product change, security-sensitive work or Deep Mission tasks.
+
+## Compact Implementation Note
+
+Для `Light` задач Implementation Report может быть compact implementation note.
+
+Обязательные поля:
+
+- `Task ID`;
+- `Source Of Work`;
+- `Changed Files or Artifacts`;
+- `Implementation Summary`;
+- `Deviations`;
+- `Validation Evidence`;
+- `Ready For Validation: Yes/No`.
+
+## Validation Report Profiles
+
+Validation Report обязан указывать `Validation Profile`:
+
+- `Light Validation`;
+- `Standard Validation`;
+- `Deep Validation`;
+- `Specialized Validation`.
+
+`Light Validation` может быть compact report, но должен содержать verdict, scope check, Source Of Work check, evidence and residual risk.
+
+`Standard Validation` использует обычную структуру Validation Report.
+
+`Deep Validation` добавляет broader regression, security/privacy/data, maintainability, scalability and release readiness checks when applicable.
+
+`Specialized Validation` фиксирует, какая экспертная область проверялась. Validator не подменяет UX Designer, Game Designer or Solution Architect.
+
+## Product Owner Review Log
+
+Product Owner Review Log фиксирует решения по Opportunities, UX Findings and Gameplay Findings.
+
+Log может быть:
+
+- разделом в PRD;
+- разделом в Backlog;
+- разделом в Mission Review;
+- отдельным файлом `PRODUCT_OWNER_REVIEW_LOG.md`, если очередь решений стала большой.
+
+Обязательные поля записи:
+
+- `Review Item ID`;
+- `Source`;
+- `Source Type`;
+- `Source Reference`;
+- `Trace`;
+- `Decision`;
+- `Decision Reason`;
+- `Resulting Source Of Work`, если применимо;
+- `Owner`;
+- `Date`.
+
+Допустимые значения `Decision`:
+
+- `Approved`;
+- `Rejected`;
+- `Deferred`;
+- `Needs Customer Decision`.
+
+Без Product Owner Review Log или эквивалентной записи в PRD, Backlog or Mission Review Opportunity, UX Finding or Gameplay Finding не должен превращаться в Backlog item.
+
+## Mission Index
+
+Mission Index является навигационным артефактом, а не source of truth для содержания Mission.
+
+Рекомендуемое расположение:
+
+```text
+documents/missions/MISSION_INDEX.md
+```
+
+Обязательные поля записи:
+
+- `Mission ID`;
+- `Status`;
+- `Operating Profile`;
+- `Last Run`;
+- `Current Decision`;
+- `Primary Source Of Work`;
+- `Mission Path`;
+- `Review Path`;
+- `Archive Status`.
+
+Mission Index обновляется при создании, завершении или архивировании Mission.
+
+## Mission State and Mission Review Split
+
+`MISSION_STATE.md` отвечает на вопрос:
+
+"Где Mission находится сейчас?"
+
+`MISSION_REVIEW.md` отвечает на вопрос:
+
+"Что изменилось, какие решения приняты и почему Mission продолжается, останавливается или завершается?"
+
+Mission State не должен дублировать run-specific Typed Budget, полный execution history или содержание task reports.
+
+Mission Review должен быть delta-based и фиксировать:
+
+- completed changes;
+- decision;
+- primary stop reason;
+- secondary stop reasons;
+- remaining work;
+- required follow-up.
+
+## Optional Standalone Artifacts
+
+В `Light` и малом `Standard` допускается не создавать отдельные standalone files для:
+
+- UX Risks, если они помещены в UX Requirements;
+- Gameplay Risks, если они помещены в Game Design Notes;
+- Gameplay Opportunities, если они помещены в Game Design Notes, Game Design Review или Mission Review.
+
+Standalone artifact обязателен, если соответствующая область становится source of truth для нескольких задач, содержит значимые risks/findings or requires Product Owner Review.
